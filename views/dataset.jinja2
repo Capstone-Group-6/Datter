@@ -1,0 +1,24 @@
+{% extends "base.jinja2" %}
+{% block title %}{{ super() }} - {{ title }}{% endblock %}
+{% block content %}
+	<h1>{{ title }} - Datter</h1>
+	<p><a href="/">Return to Main</a></p>
+	<table>
+		<thead>
+		<tr>
+			{% for column in columns %}
+				<th>{{ column }}</th>
+			{% endfor %}
+		</tr>
+		</thead>
+		<tbody>
+		{% for datum in data %}
+			<tr>
+				{% for column in columns %}
+					<td>{{ datum[column] }}</td>
+				{% endfor %}
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
