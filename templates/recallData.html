@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+            overflow: hidden;
+            background-color: #111;
+        }
+
+        body {
+            background-color: #4f4d4d;
+        }
+
+        h2 {
+            color: white;
+        }
+
+        label {
+            color: white;
+        }
+
+        li a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 15px 20px;
+            text-decoration: none;
+        }
+
+        li div {
+            color: white;
+            font-size: large;
+            font-weight: bolder;
+            float: right;
+            text-align: center;
+            padding: 15px 20px;
+        }
+
+        li a:hover {
+            background-color: lightgray;
+        }
+    </style>
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <ul>
+        <li><a href="home">Home</a></li>
+        <li><a href="login">Login</a></li>
+        <li><a href="#recallData">Recall Data</a></li>
+        <li><a href="help">Help</a></li>
+        <li>
+            <div class="company">Datter</div>
+        </li>
+    </ul>
+    <h2>Recall Data</h2>
+    <label for="username">Username: </label>
+    <input type="test" id="username" name="username">
+    <br>
+    <br>
+    <label for="testrun">Test run: </label>
+    <input list="testtype" id="testrun" name="testrun">
+    <datalist id="testtype">
+        <option value="fat">
+        <option value="ash">
+        <option value="moisture">
+        <option value="protein">
+    </datalist>
+    <br>
+    <br>
+    <label for="FirstTest">First Test Date: </label>
+    <input type="date" id="FirstTest" name="FirstTest">
+    <br>
+    <br>
+    <label for="FinalTest">Final Test Date: </label>
+    <input type="date" id="FinalTest" name="FinalTest">
+    <br>
+    <br>
+    <input type="submit" value="Find Data">
+</body>
+
+</html>
