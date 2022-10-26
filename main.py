@@ -14,8 +14,11 @@ async def setup_db():
 
 routes = web.RouteTableDef()
 
-
 @routes.get("/")
+async def index_page(request: web.Request) -> web.Response:
+	raise web.HTTPFound("/home")
+
+@routes.get("/home")
 async def index_page(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	posts = []
