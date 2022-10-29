@@ -78,7 +78,6 @@ async def process_registration(request: web.Request) -> web.Response:
 	
 	password = Argon2.hash(posted_data['password'])
 	
-	# Do these two things at the same time
 	user_creation = await db.users.insert_one({'username': username, 'password': password})
 	await set_logged_in(request, str(user_creation.inserted_id))
 	
