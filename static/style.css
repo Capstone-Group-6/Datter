@@ -15,7 +15,7 @@ html {
 
 #uploading.show {
 	display: unset;
-	background-color: rgba(255, 255, 255, 0.6);
+	background-color: rgba(255, 255, 255, 0.5);
 	width: 100vw;
 	height: 100vw;
 	position: fixed;
@@ -32,14 +32,30 @@ html {
 	font-size: 3em;
 }
 
+#error-popup {
+	background-color: rgba(255, 170, 170, 0.5);
+	color: rgb(170, 0, 0);
+	border-radius: 1em;
+	text-align: center;
+
+	width: 40vw;
+	height: 15vh;
+
+	position: fixed;
+	top: 5vh;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+.tools {
+	float: right;
+}
+
 table {
 	border-collapse: collapse;
 }
 
-th {
-	border: 1px solid black;
-}
-
-td {
-	border: 1px solid black;
+th, td {
+	border: 0.0625em solid black;
+	padding: 0.25em;
 }

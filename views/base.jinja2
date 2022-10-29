@@ -6,6 +6,20 @@
 	<title>{% block title %}Datter{% endblock %}</title>
 </head>
 <body>
+{% if error %}
+	<div id="error-popup">
+		<p>{{ error }}</p>
+		<p>Click to close</p>
+	</div>
+{% endif %}
+{% if username %}
+	<script>
+		window.username = {{ username|tojson }};
+	</script>
+	<div class="tools">
+		<a href="/logout">Logout</a>
+	</div>
+{% endif %}
 {% block content %}
 {% endblock %}
 <div id="uploading">

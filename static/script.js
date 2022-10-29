@@ -34,6 +34,51 @@
 		ev.preventDefault();
 	}
 
-	document.documentElement.ondrop = dropHandler;
-	document.documentElement.ondragover = dragOverHandler;
+	if (window.username) {
+		document.documentElement.ondrop = dropHandler;
+		document.documentElement.ondragover = dragOverHandler;
+	}
+})();
+
+(function () {
+	const confirmPassword = document.getElementById("confirm-password");
+	if (confirmPassword) {
+		const password = document.getElementById("password");
+
+		function validatePassword() {
+			if (confirmPassword.value !== password.value) {
+				confirmPassword.setCustomValidity("Passwords don't match");
+			} else {
+				confirmPassword.setCustomValidity("");
+			}
+		}
+
+		password.onchange = validatePassword;
+		confirmPassword.onkeyup = validatePassword;
+	}
+})();
+
+(function () {
+	if (window.username) {
+		const logoutLinks = document.querySelectorAll("a[href='/logout']");
+		for (const logoutLink of logoutLinks) {
+			logoutLink.onclick = e => {
+				e.preventDefault();
+
+				const form = document.createElement("form");
+				form.method = "post";
+				form.action = "/logout";
+
+				document.body.append(form);
+				form.submit();
+			};
+		}
+	}
+})();
+
+(function () {
+	const errorPopup = document.getElementById("error-popup");
+	if (errorPopup) {
+		errorPopup.onclick = () => errorPopup.remove();
+	}
 })();
