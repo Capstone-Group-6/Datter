@@ -3,13 +3,6 @@
 {% block content %}
 	<h1>All Datasets - Datter</h1>
 	<ul>
-    <li><a href="#home">Home</a></li>
-    <li><a href="login">Login</a></li>
-    <li><a href="recallData">Recall Data</a></li>
-    <li><a href="help">Help</a></li>
-    <li><div class="company">Datter</div></li>
-  	</ul>
-	<ul>
 		{% for dataset in datasets %}
 			<li><a href="{{ dataset.url }}">{{ dataset.title }}</a></li>
 		{% endfor %}
