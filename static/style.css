@@ -1,0 +1,160 @@
+html {
+	font-family: sans-serif;
+
+	/* This is so the drag-and-drop works on the entire page, not just the content's bounding box */
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
+	box-sizing: border-box;
+	color: white;
+}
+
+#uploading {
+	display: none;
+}
+
+#uploading.show {
+	display: unset;
+	background-color: rgba(255, 255, 255, 0.5);
+	width: 100vw;
+	height: 100vw;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+#uploading p {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-weight: bold;
+	font-size: 3em;
+}
+
+#error-popup {
+	background-color: rgba(255, 170, 170, 0.5);
+	color: rgb(170, 0, 0);
+	border-radius: 1em;
+	text-align: center;
+
+	width: 40vw;
+	height: 15vh;
+
+	position: fixed;
+	top: 5vh;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+.tools {
+	float: right;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+th, td {
+	border: 0.0625em solid #def;
+	padding: 0.25em;
+}
+
+#getData {
+	width: 250px;
+	height: 200px;
+	padding: 10px;
+	border: 10px solid #4f4d4d;
+  }
+  
+  ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #111;
+  }
+  
+  body {
+	background-color: #003152;
+  }
+  
+  h2 {
+	color: white;
+  }
+  
+  li .navbar a{
+	float: left;
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+  }
+
+  li .company a{
+	float: right;
+	display: block;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	padding: 14px 16px;
+  }
+  
+  li a:hover {
+	background-color: lightgray;
+  }
+  
+  
+  .drag-area {
+	border: 2px dashed #fff;
+	height: 500px;
+	width: 700px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+  }
+  
+  .drag-area.active {
+	border: 2px solid #fff;
+  }
+  
+  .drag-area .icon {
+	font-size: 100px;
+	color: #fff;
+  }
+  
+  .drag-area header {
+	font-size: 30px;
+	font-weight: 500;
+	color: #fff;
+  }
+  
+  .drag-area span {
+	font-size: 25px;
+	font-weight: 500;
+	color: #fff;
+	margin: 10px 0 15px 0;
+  }
+  
+  .drag-area button {
+	padding: 10px 25px;
+	font-size: 20px;
+	font-weight: 500;
+	border: none;
+	outline: none;
+	background: #fff;
+	color: #4f4d4d;
+	border-radius: 5px;
+	cursor: pointer;
+  }
+  
+  .drag-area img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	border-radius: 5px;
+  }

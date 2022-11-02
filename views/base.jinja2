@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<link href="/static/style.css" type="text/css" rel="stylesheet"/>
+	<title>{% block title %}Datter{% endblock %}</title>
+</head>
+<body>
+{% if error %}
+	<div id="error-popup">
+		<p>{{ error }}</p>
+		<p>Click to close</p>
+	</div>
+{% endif %}
+{% if username %}
+	<script>
+		window.username = {{ username|tojson }};
+	</script>
+	<div class="tools">
+	</div>
+		<ul>
+    <li><div class="navbar"><a href="#home">Home</a></div></li>
+    <li><div class="navbar"><a href="#home">Login</a></div></li>
+    <li><div class="navbar"><a href="#home">Recall Data</a></div></li>
+    <li><div class="navbar"><a href="#home">Help</a></div></li>
+    <li><div class="company"><a href="/">Datter</a></div></li>
+	{% if username %}<li><div class="company"><a href="/logout">Logout</a></div></li>{% endif %}
+  </ul>
+{% endif %}
+{% block content %}
+{% endblock %}
+<div id="uploading">
+	<p>Uploading...</p>
+</div>
+</body>
+<script src="/static/script.js"></script>
+</html>
