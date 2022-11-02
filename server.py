@@ -29,8 +29,17 @@ async def get_logged_in(request: web.Request) -> Optional[UserInfo]:
 	session = await get_session(request)
 	if "user_id" not in session:
 		return None
+	
 	user_id = session["user_id"]
+	if not user_id:
+		return None
+	
 	user_data = await request.app["db"].users.find_one(ObjectId(user_id))
+	if not user_data:
+		# If the user doesn't exist, force the session to log out
+		del session["user_id"]
+		return None
+	
 	return UserInfo(user_id, user_data['username'])
 
 
