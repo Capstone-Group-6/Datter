@@ -1,19 +1,19 @@
 import csv
+from collections import namedtuple
 from io import StringIO
 from pathlib import Path
 from typing import Iterable, Optional
 
-from argon2.exceptions import VerificationError
-from argon2 import PasswordHasher
-import aiohttp_session
 import aiohttp_jinja2
+import aiohttp_session
 import jinja2
 from aiohttp import web
 from aiohttp_session import get_session
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
+from argon2 import PasswordHasher
+from argon2.exceptions import VerificationError
 from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
-from collections import namedtuple
 
 
 async def setup_db() -> AsyncIOMotorDatabase:
