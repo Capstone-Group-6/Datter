@@ -3,6 +3,7 @@ from io import StringIO
 from pathlib import Path
 from typing import Iterable, Optional
 
+from argon2.exceptions import VerificationError
 from argon2 import PasswordHasher
 import aiohttp_session
 import aiohttp_jinja2
@@ -104,7 +105,10 @@ async def login_page(request: web.Request) -> web.Response:
 	if not db_user_data:
 		return aiohttp_jinja2.render_template("login.jinja2", request, context={'error': "Incorrect credentials"})
 	
-	successful_login = Argon2.verify(db_user_data['password'], posted_data['password'])
+	try:
+		successful_login = Argon2.verify(db_user_data['password'], posted_data['password'])
+	except VerificationError:
+		successful_login = False
 	
 	if not successful_login:
 		return aiohttp_jinja2.render_template("login.jinja2", request, context={'error': "Incorrect credentials"})
