@@ -15,10 +15,30 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from collections import namedtuple
 
 
+
+#motor conect to replica set(connection should be to primary-localhost:27018)
+client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017, localhost:27018, localhost:27019/?replicaSet=mongodb-datter-rs')
+
+#datter MongoDB database
+db = client['datter']
+
+#cursor = db.inventory.find({"item": "canvas"})
+
+users_collection = db['users_collection']
+sessions_collection = db['sessions_collection']
+datasets_collection = db['datasets_collection']
+
+
 async def setup_db() -> AsyncIOMotorDatabase:
 	db = AsyncIOMotorClient().datter
 	return db
 
+async def login(request):
+    session = await get_session.new_session(request)
+    datasets_collection.insertOne(session)
+
+async def logout(session):
+    datasets_collection.deleteOne(session)
 
 # might add more data later
 UserInfo = namedtuple("UserInfo", ["id", "username"])
