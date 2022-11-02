@@ -132,10 +132,10 @@ async def read_data(request: web.Request) -> web.Response:
 	dataset = await db.datasets.find_one(ObjectId(dataset_id))
 	logged_in_as = await get_user
 	
-	if not dataset:
-		raise web.HTTPNotFound()
 	if not logged_in_as:
 		raise web.HTTPFound('/login')
+	if not dataset:
+		raise web.HTTPNotFound()
 	if dataset['owner'] != logged_in_as.id:
 		raise web.HTTPNotFound()
 	
