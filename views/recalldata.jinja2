@@ -1,0 +1,48 @@
+{% extends "base.jinja2" %}
+{% block title %}{{ super() }} - Dataset Listing{% endblock %}
+{% block content %}
+<h1>Recall Data</h1>
+<ul class = "navbarbackground">
+	<li>
+		<div class="navbar"><a href="/">Home</a></div>
+	</li>
+	<li>
+		<div class="navbar"><a href="/logout">Login</a></div>
+	</li>
+	<li>
+		<div class="navbar"><a href="#">Recall Data</a></div>
+	</li>
+	<li>
+		<div class="navbar"><a href="/help">Help</a></div>
+	</li>
+	<li>
+		<div class="company"><a href="/">Datter</a></div>
+	</li>
+	{% if username %}<li>
+		<div class="company"><a href="/logout">Logout</a></div>
+	</li>{% endif %}
+</ul>
+<br>
+<label for="username">Username: </label>
+    <input type="test" id="username" name="username">
+    <br>
+    <br>
+    <label for="testrun">Test run: </label>
+    <input list="testtype" id="testrun" name="testrun">
+    <datalist id="testtype">
+        <option value="fat">
+        <option value="ash">
+        <option value="moisture">
+        <option value="protein">
+    </datalist>
+    <br>
+    <br>
+    <label for="FirstTest">First Test Date: </label>
+    <input type="date" id="FirstTest" name="FirstTest">
+    <br>
+    <br>
+    <label for="FinalTest">Final Test Date: </label>
+    <input type="date" id="FinalTest" name="FinalTest">
+    <br>
+    <br>
+    <input type="submit" value="Find Data">{% endblock %}

@@ -1,30 +1,32 @@
 {% extends "base.jinja2" %}
 {% block title %}{{ super() }} - Register Account{% endblock %}
 {% block content %}
+<div class="register">
 	<h1>Register Account - Datter</h1>
 	<form method="post" action="/create-account">
-	<table>
-		<tr>
-			<th><label for="username">Username</label></th>
-			<td><input type="text" name="username" id="username"/></td>
-		</tr>
-		<tr>
-			<th><label for="password">Password</label></th>
-			<td><input type="password" name="password" id="password"/></td>
-		</tr>
-		<tr>
-			<th><label for="confirm-password">Confirm Password</label></th>
-			<td><input type="password" id="confirm-password"/></td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<label><input type="checkbox" required/>&nbsp;I am a human</label>
-			</td>
-		</tr>
-		<tr>
-			<td><a href="/login">Log In</a></td>
-			<th><input type="submit" value="Register"/></th>
-		</tr>
-	</table>
+		<table class = "center">
+			<tr>
+				<th><label for="username">Username</label></th>
+				<td><input type="text" name="username" id="username" /></td>
+			</tr>
+			<tr>
+				<th><label for="password">Password</label></th>
+				<td><input type="password" name="password" id="password" /></td>
+			</tr>
+			<tr>
+				<th><label for="confirm-password">Confirm Password</label></th>
+				<td><input type="password" id="confirm-password" /></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label><input type="checkbox" required />&nbsp;I am a human</label>
+				</td>
+			</tr>
+			<tr>
+				<td><a href="/login">Log In</a></td>
+				<th><input type="submit" value="Register" /></th>
+			</tr>
+		</table>
 	</form>
+</div>
 {% endblock %}

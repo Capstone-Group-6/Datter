@@ -57,6 +57,24 @@ async def index_page(request: web.Request) -> web.Response:
 	
 	return aiohttp_jinja2.render_template("index.jinja2", request, context={'datasets': datasets, 'username': logged_in_as.username})
 
+@routes.get("/help")
+async def index_page(request: web.Request) -> web.Response:
+	logged_in_as = await get_logged_in(request)
+	if not logged_in_as:
+		# Redirect to login page
+		raise web.HTTPFound("/login")
+	
+	db = request.app["db"]
+	datasets = []
+	async for dataset in db.datasets.find({'owner': logged_in_as.id}):
+		datasets.append({'url': f"/data/{str(dataset['_id'])}", 'title': dataset['title']})
+	
+	return aiohttp_jinja2.render_template("help.jinja2", request, context={'datasets': datasets, 'username': logged_in_as.username})
+
+@routes.get("/recall-data")
+async def register_page(request: web.Request) -> web.Response:
+	return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={})
+
 
 @routes.get("/create-account")
 async def register_page(request: web.Request) -> web.Response:
