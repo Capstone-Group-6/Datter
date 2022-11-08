@@ -1,32 +1,44 @@
 {% extends "base.jinja2" %}
 {% block title %}{{ super() }} - {{ title }}{% endblock %}
 {% block content %}
-	<h1>{{ title }} - Datter</h1>
-	<ul class = "navbarbackground">
-		<li><div class="navbar"><a href="/">Home</a></div></li>
-		<li><div class="navbar"><a href="#">Placeholder</a></div></li>
-		<li><div class="navbar"><a href="#home">Recall Data</a></div></li>
-		<li><div class="navbar"><a href="/help">Help</a></div></li>
-		<li><div class="company"><a href="/">Datter</a></div></li>
-		{% if username %}<li><div class="company"><a href="/logout">Logout</a></div></li>{% endif %}
-	  </ul>
-	<p><a href="/">Return to Main</a></p>
-	<table>
-		<thead>
+<h1>{{ title }} - Datter</h1>
+<ul class="navbarbackground">
+	<li>
+		<div class="navbar"><a href="/">Home</a></div>
+	</li>
+	<li>
+		<div class="navbar"><a href="/logout">Login</a></div>
+	</li>
+	<li>
+		<div class="navbar"><a href="/recall-data">Recall Data</a></div>
+	</li>
+	<li>
+		<div class="navbar"><a href="#">Help</a></div>
+	</li>
+	<li>
+		<div class="company"><a href="/">Datter</a></div>
+	</li>
+	{% if username %}<li>
+		<div class="company"><a href="/logout">Logout</a></div>
+	</li>{% endif %}
+</ul>
+<p><a href="/">Return to Main</a></p>
+<table>
+	<thead>
 		<tr>
 			{% for column in columns %}
-				<th>{{ column }}</th>
+			<th>{{ column }}</th>
 			{% endfor %}
 		</tr>
-		</thead>
-		<tbody>
+	</thead>
+	<tbody>
 		{% for datum in data %}
-			<tr>
-				{% for column in columns %}
-					<td>{{ datum[column] }}</td>
-				{% endfor %}
-			</tr>
+		<tr>
+			{% for column in columns %}
+			<td>{{ datum[column] }}</td>
+			{% endfor %}
+		</tr>
 		{% endfor %}
-		</tbody>
-	</table>
+	</tbody>
+</table>
 {% endblock %}
