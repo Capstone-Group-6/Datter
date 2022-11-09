@@ -1,11 +1,15 @@
+
 #Datter database schema:
+
 #Mongodb attribute '_id' is automatically created and unique
 #for any document inserted in a collection
 #
 #Primary key user_collection: _id
 #Primary key datasets_collection: _id, _id_user_obj
 #Primary key sessions_collection: _id
+
 #    Datter
+
 #                  datasets_collection: (users data sets)
 #                  [         
 #                    {  _id: "", user_id: "", dataset: csv, json, xcel  }

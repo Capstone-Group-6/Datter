@@ -1,43 +1,23 @@
 import csv
+from collections import namedtuple
 from io import StringIO
 from pathlib import Path
 from typing import Iterable, Optional
 
-from argon2 import PasswordHasher
-import aiohttp_session
 import aiohttp_jinja2
+import aiohttp_session
 import jinja2
 from aiohttp import web
 from aiohttp_session import get_session
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
+from argon2 import PasswordHasher
+from argon2.exceptions import VerificationError
 from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
-from collections import namedtuple
-
-
-#motor conect to replica set(connection should be to primary-localhost:27018)
-client = AsyncIOMotorClient('mongodb://localhost:27017, localhost:27018, localhost:27019/?replicaSet=mongodb-datter-rs')
-
-#datter MongoDB database
-db = client['datter']
-
-#cursor = db.inventory.find({"item": "canvas"})
-
-users_collection = db['users_collection']
-sessions_collection = db['sessions_collection']
-datasets_collection = db['datasets_collection']
 
 async def setup_db() -> AsyncIOMotorDatabase:
 	db = AsyncIOMotorClient().datter
 	return db
-
-
-async def login(request):
-    session = await get_session.new_session(request)
-    datasets_collection.insertOne(session)
-
-async def logout(session):
-    datasets_collection.deleteOne(session)
 
 # might add more data later
 UserInfo = namedtuple("UserInfo", ["id", "username"])
@@ -48,8 +28,17 @@ async def get_logged_in(request: web.Request) -> Optional[UserInfo]:
 	session = await get_session(request)
 	if "user_id" not in session:
 		return None
+	
 	user_id = session["user_id"]
+	if not user_id:
+		return None
+	
 	user_data = await request.app["db"].users.find_one(ObjectId(user_id))
+	if not user_data:
+		# If the user doesn't exist, force the session to log out
+		del session["user_id"]
+		return None
+	
 	return UserInfo(user_id, user_data['username'])
 
 
@@ -132,7 +121,10 @@ async def login_page(request: web.Request) -> web.Response:
 	if not db_user_data:
 		return aiohttp_jinja2.render_template("login.jinja2", request, context={'error': "Incorrect credentials"})
 	
-	successful_login = Argon2.verify(db_user_data['password'], posted_data['password'])
+	try:
+		successful_login = Argon2.verify(db_user_data['password'], posted_data['password'])
+	except VerificationError:
+		successful_login = False
 	
 	if not successful_login:
 		return aiohttp_jinja2.render_template("login.jinja2", request, context={'error': "Incorrect credentials"})
@@ -159,11 +151,12 @@ async def read_data(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	dataset = await db.datasets.find_one(ObjectId(dataset_id))
 	logged_in_as = await get_user
-	
-	if not dataset:
-		raise web.HTTPNotFound()
+
 	if not logged_in_as:
 		raise web.HTTPFound('/login')
+	if not dataset:
+		raise web.HTTPNotFound()
+  
 	if dataset['owner'] != logged_in_as.id:
 		raise web.HTTPNotFound()
 	
