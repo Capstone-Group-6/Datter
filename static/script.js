@@ -1,3 +1,22 @@
+
+(function (){
+	let isUploading = false
+
+	function submitHandler(ev) {
+		const data = new FormData();
+		data.append('file', files[0]);
+
+		isUploading = true;
+		document.getElementById("uploading").classList.add("show");
+
+		fetch('/data', {
+			body: data,
+			method: 'POST'
+		}).then(res => res.json()).then(res => window.location.href = res.redirect_to);
+	}
+
+})();
+
 (function () {
 	let isUploading = false
 

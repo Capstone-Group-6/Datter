@@ -15,7 +15,6 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from collections import namedtuple
 
 
-
 #motor conect to replica set(connection should be to primary-localhost:27018)
 client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017, localhost:27018, localhost:27019/?replicaSet=mongodb-datter-rs')
 
@@ -28,10 +27,10 @@ users_collection = db['users_collection']
 sessions_collection = db['sessions_collection']
 datasets_collection = db['datasets_collection']
 
-
 async def setup_db() -> AsyncIOMotorDatabase:
 	db = AsyncIOMotorClient().datter
 	return db
+
 
 async def login(request):
     session = await get_session.new_session(request)
@@ -76,6 +75,24 @@ async def index_page(request: web.Request) -> web.Response:
 		datasets.append({'url': f"/data/{str(dataset['_id'])}", 'title': dataset['title']})
 	
 	return aiohttp_jinja2.render_template("index.jinja2", request, context={'datasets': datasets, 'username': logged_in_as.username})
+
+@routes.get("/help")
+async def index_page(request: web.Request) -> web.Response:
+	logged_in_as = await get_logged_in(request)
+	if not logged_in_as:
+		# Redirect to login page
+		raise web.HTTPFound("/login")
+	
+	db = request.app["db"]
+	datasets = []
+	async for dataset in db.datasets.find({'owner': logged_in_as.id}):
+		datasets.append({'url': f"/data/{str(dataset['_id'])}", 'title': dataset['title']})
+	
+	return aiohttp_jinja2.render_template("help.jinja2", request, context={'datasets': datasets, 'username': logged_in_as.username})
+
+@routes.get("/recall-data")
+async def register_page(request: web.Request) -> web.Response:
+	return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={})
 
 
 @routes.get("/create-account")
