@@ -1,3 +1,4 @@
+
 (function (){
 	let isUploading = false
 
@@ -15,6 +16,7 @@
 	}
 
 })();
+
 (function () {
 	let isUploading = false
 
