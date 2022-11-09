@@ -1,34 +1,38 @@
-#datter database schema:
+#Datter database schema:
 #Mongodb attribute '_id' is automatically created and unique
 #for any document inserted in a collection
 #
 #Primary key user_collection: _id
 #Primary key datasets_collection: _id, _id_user_obj
 #Primary key sessions_collection: _id
-#    datter
+#    Datter
 #                  datasets_collection: (users data sets)
 #                  [         
 #                    {  _id: "", user_id: "", dataset: csv, json, xcel  }
 #                  ]
-#                  sessions_collection: (maintains record of loged in users)
+#                  sessions_collection: (maintains record of logged in users)
 #                  [
-#                    {  _id: "", session_key: "", user_id: ""  }
+#                    {  _id: "", session_token: "", user_id: ""  }
 #                  ]
 #                  users_collection: (platform- user accounts)
 #                  [
-#                       user-obj-id
-#                    {  _id: "", user_name: "", pwd: ""  }
+#                —- user-obj-id—-
+#                    {  _id: "", user_name: "", pwd: "" }
 #                  ]
 #                  
 #
-#session maintance: behavior outline
-#action: user logs in
-#result: session key-token is created in server,
-#        session key-token and _id(user-obj-id) are inserted in to
+#Sessions Policy: Behavior Overview-
+#Action: user logs in to Datter on machine A
+#Result: session-token is created in server,
+#        session-token and _id(user-obj-id) are inserted in to
 #        sessions_collection.
 #
-#sessions_collection maintains account of loged in user for duration of session.
+#sessions_collection maintains account of logged in user for duration of session.
 #
-#action: user logs out
-#result: session key-token, _id(user-obj-id) document is removed from 
+#Action: user logs in to Datter on machine B
+#Result: session-token in sessions_collection from machine A is overridden,
+#        by newly created session-token from login on machine B. 
+#
+#Action: user logs out
+#Result: session key-token, _id(user-obj-id) document is removed from 
 #        sessions_collection.
