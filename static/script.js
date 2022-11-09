@@ -2,9 +2,11 @@
 
 (function (){
 	let isUploading = false
-
+	const form = document.getElementById("fileuploadbutton");
 	function submitHandler(ev) {
+		ev.preventDefault();
 		const data = new FormData();
+		const files = form.elements["filename"].files;
 		data.append('file', files[0]);
 
 		isUploading = true;
@@ -16,6 +18,7 @@
 		}).then(res => res.json()).then(res => window.location.href = res.redirect_to);
 	}
 
+	form.addEventListener("submit", submitHandler);
 })();
 
 (function () {

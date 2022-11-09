@@ -31,9 +31,9 @@
 <br>
 <br>
 <!--<form method="post" action="/data">-->
-<div class="fileuploadbutton">
-	<input type="file" id="myFile" name="filename">
+<form id="fileuploadbutton" method="post" enctype="multipart/form-data">
+	<input type="file" id="filename" name="filename">
 	<input type="submit" value="Upload File">
-</div>
+</form>
 <!--</form>-->
 {% endblock %}
