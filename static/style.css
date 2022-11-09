@@ -7,6 +7,7 @@ html {
 	width: 100vw;
 	height: 100vh;
 	box-sizing: border-box;
+	color: white;
 }
 
 #uploading {
@@ -55,7 +56,98 @@ table {
 	border-collapse: collapse;
 }
 
-th, td {
-	border: 0.0625em solid black;
+h1{
+	text-align: center;
+}
+
+th,
+td {
+	border: 0.0625em solid #def;
 	padding: 0.25em;
+}
+
+#getData {
+	width: 250px;
+	height: 200px;
+	padding: 10px;
+	border: 10px solid #4f4d4d;
+}
+
+ul.navbarbackground {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: darkslategray;
+}
+
+body {
+	background-color: #003152;
+}
+
+h2 {
+	color: white;
+}
+
+.login {
+	text-align: center;
+}
+
+.register{
+	text-align: center;
+}
+
+.center{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.fileuploadbutton{
+	text-align: center;
+}
+
+.navbar a {
+	float: left;
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+li .company a {
+	float: right;
+	display: block;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	padding: 14px 16px;
+}
+
+li .navbar a:hover {
+	background-color: lightgray;
+}
+
+.fileuploadbox {
+	width: 100%;
+	height: 500px;
+}
+
+.dragndrop{
+	margin-right: 25%;
+	margin-left: 25%;
+	height: 100%;
+	border-color: white;
+	border-style: dashed;
+	text-align: center;
+}
+
+.dragwords{
+margin-top: 22%;
+font-size: x-large;
+}
+
+.filename a{
+	color: #def;
+	text-decoration: none;
 }
