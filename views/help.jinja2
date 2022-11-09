@@ -1,0 +1,33 @@
+{% extends "base.jinja2" %}
+{% block title %}{{ super() }} - Dataset Listing{% endblock %}
+{% block content %}
+<h1>Help</h1>
+<ul class = "navbarbackground">
+	<li>
+		<div class="navbar"><a href="/">Home</a></div>
+	</li>
+	<li>
+		<div class="navbar"><a href="/logout">Login</a></div>
+	</li>
+	<li>
+		<div class="navbar"><a href="/recall-data">Recall Data</a></div>
+	</li>
+	<li>
+		<div class="navbar"><a href="#">Help</a></div>
+	</li>
+	<li>
+		<div class="company"><a href="/">Datter</a></div>
+	</li>
+	{% if username %}<li>
+		<div class="company"><a href="/logout">Logout</a></div>
+	</li>{% endif %}
+</ul>
+<br>
+<ul>
+	{% for dataset in datasets %}
+	<li>
+		<div class="filename"><a href="{{ dataset.url }}">{{ dataset.title }}</a></div>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}

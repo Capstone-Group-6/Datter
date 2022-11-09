@@ -1,0 +1,153 @@
+html {
+	font-family: sans-serif;
+
+	/* This is so the drag-and-drop works on the entire page, not just the content's bounding box */
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
+	box-sizing: border-box;
+	color: white;
+}
+
+#uploading {
+	display: none;
+}
+
+#uploading.show {
+	display: unset;
+	background-color: rgba(255, 255, 255, 0.5);
+	width: 100vw;
+	height: 100vw;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+#uploading p {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-weight: bold;
+	font-size: 3em;
+}
+
+#error-popup {
+	background-color: rgba(255, 170, 170, 0.5);
+	color: rgb(170, 0, 0);
+	border-radius: 1em;
+	text-align: center;
+
+	width: 40vw;
+	height: 15vh;
+
+	position: fixed;
+	top: 5vh;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+.tools {
+	float: right;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+h1{
+	text-align: center;
+}
+
+th,
+td {
+	border: 0.0625em solid #def;
+	padding: 0.25em;
+}
+
+#getData {
+	width: 250px;
+	height: 200px;
+	padding: 10px;
+	border: 10px solid #4f4d4d;
+}
+
+ul.navbarbackground {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: darkslategray;
+}
+
+body {
+	background-color: #003152;
+}
+
+h2 {
+	color: white;
+}
+
+.login {
+	text-align: center;
+}
+
+.register{
+	text-align: center;
+}
+
+.center{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.fileuploadbutton{
+	text-align: center;
+}
+
+.navbar a {
+	float: left;
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+li .company a {
+	float: right;
+	display: block;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	padding: 14px 16px;
+}
+
+li .navbar a:hover {
+	background-color: lightgray;
+}
+
+.fileuploadbox {
+	width: 100%;
+	height: 500px;
+}
+
+.dragndrop{
+	margin-right: 25%;
+	margin-left: 25%;
+	height: 100%;
+	border-color: white;
+	border-style: dashed;
+	text-align: center;
+}
+
+.dragwords{
+margin-top: 22%;
+font-size: x-large;
+}
+
+.filename a{
+	color: #def;
+	text-decoration: none;
+}
