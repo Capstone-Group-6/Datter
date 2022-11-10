@@ -3,7 +3,7 @@
 
 	const form = document.getElementById("fileuploadbutton");
 
-	if (form) {
+	if (form != null) {
 		function submitHandler(ev) {
 			ev.preventDefault();
 
