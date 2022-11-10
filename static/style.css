@@ -34,7 +34,7 @@ html {
 }
 
 #error-popup {
-	background-color: rgba(255, 170, 170, 0.5);
+	background-color: rgba(255, 170, 170, 0.8);
 	color: rgb(170, 0, 0);
 	border-radius: 1em;
 	text-align: center;
@@ -43,9 +43,9 @@ html {
 	height: 15vh;
 
 	position: fixed;
-	top: 5vh;
+	top: 50%;
 	left: 50%;
-	transform: translate(-50%, 0);
+	transform: translate(-50%, -50%);
 }
 
 .tools {
@@ -56,7 +56,7 @@ table {
 	border-collapse: collapse;
 }
 
-h1{
+h1 {
 	text-align: center;
 }
 
@@ -93,16 +93,16 @@ h2 {
 	text-align: center;
 }
 
-.register{
+.register {
 	text-align: center;
 }
 
-.center{
+.center {
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.fileuploadbutton{
+#fileuploadbutton {
 	text-align: center;
 }
 
@@ -133,7 +133,7 @@ li .navbar a:hover {
 	height: 500px;
 }
 
-.dragndrop{
+.dragndrop {
 	margin-right: 25%;
 	margin-left: 25%;
 	height: 100%;
@@ -142,12 +142,12 @@ li .navbar a:hover {
 	text-align: center;
 }
 
-.dragwords{
-margin-top: 22%;
-font-size: x-large;
+.dragwords {
+	margin-top: 22%;
+	font-size: x-large;
 }
 
-.filename a{
+.filename a {
 	color: #def;
 	text-decoration: none;
 }

@@ -1,6 +1,9 @@
-
-
 (function (){
+
+	let isUploading = false;
+
+	const form = document.getElementById("fileuploadbutton");
+
 	let isUploading = false
 	const form = document.getElementById("fileuploadbutton");
 	function submitHandler(ev) {
@@ -9,20 +12,31 @@
 		const files = form.elements["filename"].files;
 		data.append('file', files[0]);
 
-		isUploading = true;
-		document.getElementById("uploading").classList.add("show");
 
-		fetch('/data', {
-			body: data,
-			method: 'POST'
-		}).then(res => res.json()).then(res => window.location.href = res.redirect_to);
-	}
+	if (form != null) {
+		function submitHandler(ev) {
+			ev.preventDefault();
+
+			const data = new FormData();
+			const files = form.elements["filename"].files;
+			data.append('file', files[0]);
+
+
+			isUploading = true;
+			document.getElementById("uploading").classList.add("show");
 
 	form.addEventListener("submit", submitHandler);
 })();
 
-(function () {
-	let isUploading = false
+
+			fetch('/data', {
+				body: data,
+				method: 'POST'
+			}).then(res => res.json()).then(res => window.location.href = res.redirect_to);
+		}
+
+		form.addEventListener("submit", submitHandler);
+	}
 
 	function dropHandler(ev) {
 		ev.preventDefault();

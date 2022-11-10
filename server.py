@@ -15,9 +15,11 @@ from argon2.exceptions import VerificationError
 from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
+
 async def setup_db() -> AsyncIOMotorDatabase:
 	db = AsyncIOMotorClient().datter
 	return db
+
 
 # might add more data later
 UserInfo = namedtuple("UserInfo", ["id", "username"])
@@ -65,8 +67,9 @@ async def index_page(request: web.Request) -> web.Response:
 	
 	return aiohttp_jinja2.render_template("index.jinja2", request, context={'datasets': datasets, 'username': logged_in_as.username})
 
+
 @routes.get("/help")
-async def index_page(request: web.Request) -> web.Response:
+async def help_page(request: web.Request) -> web.Response:
 	logged_in_as = await get_logged_in(request)
 	if not logged_in_as:
 		# Redirect to login page
@@ -79,8 +82,9 @@ async def index_page(request: web.Request) -> web.Response:
 	
 	return aiohttp_jinja2.render_template("help.jinja2", request, context={'datasets': datasets, 'username': logged_in_as.username})
 
+
 @routes.get("/recall-data")
-async def register_page(request: web.Request) -> web.Response:
+async def recall_data_page(request: web.Request) -> web.Response:
 	return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={})
 
 
@@ -112,7 +116,7 @@ async def process_registration(request: web.Request) -> web.Response:
 
 
 @routes.post("/login")
-async def login_page(request: web.Request) -> web.Response:
+async def handle_login(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	posted_data = await request.post()
 	username = posted_data['username']
@@ -151,18 +155,45 @@ async def read_data(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	dataset = await db.datasets.find_one(ObjectId(dataset_id))
 	logged_in_as = await get_user
-
+	
 	if not logged_in_as:
 		raise web.HTTPFound('/login')
 	if not dataset:
 		raise web.HTTPNotFound()
-  
+	
 	if dataset['owner'] != logged_in_as.id:
 		raise web.HTTPNotFound()
 	
 	context = {'title': dataset['title'], 'columns': dataset['columns'], 'data': dataset['data'], 'username': logged_in_as.username}
 	
 	return aiohttp_jinja2.render_template("dataset.jinja2", request, context=context)
+
+
+@routes.get('/data/{id}/histogram.svg')
+async def visualize_histogram(request: web.Request) -> web.Response:
+	get_user = get_logged_in(request)
+	dataset_id = request.match_info.get("id")
+	
+	db = request.app["db"]
+	dataset = await db.datasets.find_one(ObjectId(dataset_id))
+	logged_in_as = await get_user
+	
+	if not logged_in_as:
+		raise web.HTTPFound('/login')
+	if not dataset:
+		raise web.HTTPNotFound()
+	if dataset['owner'] != logged_in_as.id:
+		raise web.HTTPNotFound()
+	
+	column = request.query.get("column")
+	if column not in dataset['columns']:
+		column = dataset['columns'][0]
+	
+	context = {'title': dataset['title'], 'column': column, 'data': dataset['data']}
+	
+	response = aiohttp_jinja2.render_template("svg/histogram.jinja2", request, context=context)
+	response.content_type = "image/svg+xml"
+	return response
 
 
 def read_dataset_from_string(title: str, lines: Iterable[str], user_id: str) -> dict:
@@ -203,7 +234,7 @@ async def create_app():
 	app_db = await setup_db()
 	
 	app = web.Application()
-	aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('./views'))
+	aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('./views'), extensions=['jinja2.ext.do'])
 	# TODO This key is only for testing purposes, change it to an ENVIRONMENT VARIABLE (important!) for production
 	aiohttp_session.setup(app, EncryptedCookieStorage(b'This is a secret key don\'t steal'))
 	
