@@ -17,7 +17,7 @@ from collections import namedtuple
 
 
 #motor conect to replica set(connection should be to primary-localhost:27018)
-client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017, localhost:27018, localhost:27019/?replicaSet=mongodb-datter-rs')
+client = AsyncIOMotorClient('mongodb://localhost:27017, localhost:27018, localhost:27019/?replicaSet=mongodb-datter-rs')
 
 #datter MongoDB database
 db = client['datter']
