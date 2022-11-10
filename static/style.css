@@ -34,7 +34,7 @@ html {
 }
 
 #error-popup {
-	background-color: rgba(255, 170, 170, 0.5);
+	background-color: rgba(255, 170, 170, 0.8);
 	color: rgb(170, 0, 0);
 	border-radius: 1em;
 	text-align: center;
