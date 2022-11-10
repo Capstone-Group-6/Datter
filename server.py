@@ -116,7 +116,7 @@ async def process_registration(request: web.Request) -> web.Response:
 
 
 @routes.post("/login")
-async def login_page(request: web.Request) -> web.Response:
+async def handle_login(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	posted_data = await request.post()
 	username = posted_data['username']
