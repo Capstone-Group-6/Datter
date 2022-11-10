@@ -15,9 +15,11 @@ from argon2.exceptions import VerificationError
 from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
+
 async def setup_db() -> AsyncIOMotorDatabase:
 	db = AsyncIOMotorClient().datter
 	return db
+
 
 # might add more data later
 UserInfo = namedtuple("UserInfo", ["id", "username"])
@@ -65,8 +67,9 @@ async def index_page(request: web.Request) -> web.Response:
 	
 	return aiohttp_jinja2.render_template("index.jinja2", request, context={'datasets': datasets, 'username': logged_in_as.username})
 
+
 @routes.get("/help")
-async def index_page(request: web.Request) -> web.Response:
+async def help_page(request: web.Request) -> web.Response:
 	logged_in_as = await get_logged_in(request)
 	if not logged_in_as:
 		# Redirect to login page
@@ -79,8 +82,9 @@ async def index_page(request: web.Request) -> web.Response:
 	
 	return aiohttp_jinja2.render_template("help.jinja2", request, context={'datasets': datasets, 'username': logged_in_as.username})
 
+
 @routes.get("/recall-data")
-async def register_page(request: web.Request) -> web.Response:
+async def recall_data_page(request: web.Request) -> web.Response:
 	return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={})
 
 
@@ -151,12 +155,12 @@ async def read_data(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	dataset = await db.datasets.find_one(ObjectId(dataset_id))
 	logged_in_as = await get_user
-
+	
 	if not logged_in_as:
 		raise web.HTTPFound('/login')
 	if not dataset:
 		raise web.HTTPNotFound()
-  
+	
 	if dataset['owner'] != logged_in_as.id:
 		raise web.HTTPNotFound()
 	
