@@ -43,9 +43,9 @@ html {
 	height: 15vh;
 
 	position: fixed;
-	top: 5vh;
+	top: 50%;
 	left: 50%;
-	transform: translate(-50%, 0);
+	transform: translate(-50%, -50%);
 }
 
 .tools {
