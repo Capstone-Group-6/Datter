@@ -2,7 +2,7 @@
 {% block title %}{{ super() }} - Dataset Listing{% endblock %}
 {% block content %}
 <h1>Recall Data</h1>
-<ul class = "navbarbackground">
+<ul class="navbarbackground">
 	<li>
 		<div class="navbar"><a href="/">Home</a></div>
 	</li>
@@ -24,25 +24,26 @@
 </ul>
 <br>
 <label for="username">Username: </label>
-    <input type="test" id="username" name="username">
-    <br>
-    <br>
+    <input type="test" id="username" name="username"/>
+    <br/>
+    <br/>
     <label for="testrun">Test run: </label>
-    <input list="testtype" id="testrun" name="testrun">
+    <input list="testtype" id="testrun" name="testrun"/>
     <datalist id="testtype">
-        <option value="fat">
-        <option value="ash">
-        <option value="moisture">
-        <option value="protein">
+        <option value="fat"/>
+        <option value="ash"/>
+        <option value="moisture"/>
+        <option value="protein"/>
     </datalist>
-    <br>
-    <br>
+    <br/>
+    <br/>
     <label for="FirstTest">First Test Date: </label>
-    <input type="date" id="FirstTest" name="FirstTest">
-    <br>
-    <br>
+    <input type="date" id="FirstTest" name="FirstTest"/>
+    <br/>
+    <br/>
     <label for="FinalTest">Final Test Date: </label>
-    <input type="date" id="FinalTest" name="FinalTest">
-    <br>
-    <br>
-    <input type="submit" value="Find Data">{% endblock %}
+    <input type="date" id="FinalTest" name="FinalTest"/>
+    <br/>
+    <br/>
+    <input type="submit" value="Find Data"/>
+{% endblock %}

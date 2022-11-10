@@ -1,25 +1,27 @@
-
-
 (function (){
-	let isUploading = false
+	let isUploading = false;
 
-	function submitHandler(ev) {
-		const data = new FormData();
-		data.append('file', files[0]);
+	const form = document.getElementById("fileuploadbutton");
 
-		isUploading = true;
-		document.getElementById("uploading").classList.add("show");
+	if (form) {
+		function submitHandler(ev) {
+			ev.preventDefault();
 
-		fetch('/data', {
-			body: data,
-			method: 'POST'
-		}).then(res => res.json()).then(res => window.location.href = res.redirect_to);
+			const data = new FormData();
+			const files = form.elements["filename"].files;
+			data.append('file', files[0]);
+
+			isUploading = true;
+			document.getElementById("uploading").classList.add("show");
+
+			fetch('/data', {
+				body: data,
+				method: 'POST'
+			}).then(res => res.json()).then(res => window.location.href = res.redirect_to);
+		}
+
+		form.addEventListener("submit", submitHandler);
 	}
-
-})();
-
-(function () {
-	let isUploading = false
 
 	function dropHandler(ev) {
 		ev.preventDefault();
