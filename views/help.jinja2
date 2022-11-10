@@ -1,7 +1,7 @@
 {% extends "base.jinja2" %}
 {% block title %}{{ super() }} - Dataset Listing{% endblock %}
 {% block content %}
-<h1>Datter</h1>
+<h1>Help</h1>
 <ul class = "navbarbackground">
 	<li>
 		<div class="navbar"><a href="/">Home</a></div>
@@ -13,7 +13,7 @@
 		<div class="navbar"><a href="/recall-data">Recall Data</a></div>
 	</li>
 	<li>
-		<div class="navbar"><a href="/help">Help</a></div>
+		<div class="navbar"><a href="#">Help</a></div>
 	</li>
 	<li>
 		<div class="company"><a href="/">Datter</a></div>
@@ -23,17 +23,11 @@
 	</li>{% endif %}
 </ul>
 <br>
-<div class = "fileuploadbox">
-	<div class = "dragndrop">
-		<div class = "dragwords">Drag and Drop File to Upload </div>
-	</div>
-</div>
-<br>
-<br>
-<!--<form method="post" action="/data">-->
-<div class="fileuploadbutton">
-	<input type="file" id="myFile" name="filename">
-	<input type="submit" value="Upload File">
-</div>
-<!--</form>-->
+<ul>
+	{% for dataset in datasets %}
+	<li>
+		<div class="filename"><a href="{{ dataset.url }}">{{ dataset.title }}</a></div>
+	</li>
+	{% endfor %}
+</ul>
 {% endblock %}
