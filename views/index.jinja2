@@ -30,10 +30,22 @@
 			<div class="dragwords">Drag and Drop File to Upload</div>
 		</div>
 	</div>
+
 	<br/>
 	<br/>
 	<form id="fileuploadbutton" method="post" enctype="multipart/form-data">
 		<input type="file" id="filename" name="filename"/>
 		<input type="submit" value="Upload File"/>
 	</form>
+
+</div>
+<br>
+<br>
+<!--<form method="post" action="/data">-->
+<form id="fileuploadbutton" method="post" enctype="multipart/form-data">
+	<input type="file" id="filename" name="filename">
+	<input type="submit" value="Upload File">
+</form>
+<!--</form>-->
+
 {% endblock %}

@@ -1,7 +1,17 @@
 (function (){
+
 	let isUploading = false;
 
 	const form = document.getElementById("fileuploadbutton");
+
+	let isUploading = false
+	const form = document.getElementById("fileuploadbutton");
+	function submitHandler(ev) {
+		ev.preventDefault();
+		const data = new FormData();
+		const files = form.elements["filename"].files;
+		data.append('file', files[0]);
+
 
 	if (form != null) {
 		function submitHandler(ev) {
@@ -11,8 +21,13 @@
 			const files = form.elements["filename"].files;
 			data.append('file', files[0]);
 
+
 			isUploading = true;
 			document.getElementById("uploading").classList.add("show");
+
+	form.addEventListener("submit", submitHandler);
+})();
+
 
 			fetch('/data', {
 				body: data,
