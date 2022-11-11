@@ -192,4 +192,7 @@ cython_debug/
 .DS_Store
 
 #Database
-/mongodb-only
+#/mongodb-only
+
+#db
+mongosh-cmds.txt
