@@ -1,13 +1,13 @@
 {% extends "base.jinja2" %}
 {% block title %}{{ super() }} - Dataset Listing{% endblock %}
 {% block content %}
+
 <h1>Recall Data</h1>
 <ul class = "navbarbackground">
 	<li>
 		<div class="navbar"><a href="/">Home</a></div>
 	</li>
-	<li>
-		<div class="navbar"><a href="/logout">Login</a></div>
+	<li>		<div class="navbar"><a href="/logout">Login</a></div>
 	</li>
 	<li>
 		<div class="navbar"><a href="#">Recall Data</a></div>
@@ -23,12 +23,13 @@
 	</li>{% endif %}
 </ul>
 <br>
+<div class="recall">
 <label for="username">Username: </label>
     <input type="test" id="username" name="username">
     <br>
     <br>
     <label for="testrun">Test run: </label>
-    <input list="testtype" id="testrun" name="testrun">
+    <center><input list="testtype" id="testrun" name="testrun">
     <datalist id="testtype">
         <option value="fat">
         <option value="ash">
@@ -45,4 +46,6 @@
     <input type="date" id="FinalTest" name="FinalTest">
     <br>
     <br>
-    <input type="submit" value="Find Data">{% endblock %}
+    <input class="recall-log" type="submit" value="Find Data"></center>
+    </div>
+    {% endblock %}
