@@ -4,10 +4,11 @@
 
 	const form = document.getElementById("fileuploadbutton");
 
-
 	if (form != null) {
 		function submitHandler(ev) {
 			ev.preventDefault();
+
+			if (isUploading) return;
 
 			const data = new FormData();
 			const files = form.elements["filename"].files;
