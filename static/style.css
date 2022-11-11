@@ -82,7 +82,7 @@ ul.navbarbackground {
 }
 
 body {
-	background-color: #003152;
+	background-color: gray;
 }
 
 h2 {
@@ -151,3 +151,4 @@ font-size: x-large;
 	color: #def;
 	text-decoration: none;
 }
+
