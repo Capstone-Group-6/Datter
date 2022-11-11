@@ -1,7 +1,9 @@
 (function (){
+
 	let isUploading = false;
 
 	const form = document.getElementById("fileuploadbutton");
+
 
 	if (form != null) {
 		function submitHandler(ev) {
