@@ -1,5 +1,4 @@
 (function (){
-
 	let isUploading = false;
 
 	const form = document.getElementById("fileuploadbutton");
