@@ -151,3 +151,7 @@ li .navbar a:hover {
 	color: #def;
 	text-decoration: none;
 }
+
+.data-vis {
+	text-align: center;
+}

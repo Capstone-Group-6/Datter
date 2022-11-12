@@ -1,0 +1,9 @@
+{% extends "base.jinja2" %}
+{% block title %}{{ super() }} - Histogram of {{ title }}{% endblock %}
+{% block pagetitle %}
+	<h1>Histogram of {{ title }} - Datter</h1>
+{% endblock %}
+{% block content %}
+	<p><a href="/data/{{ data_id }}">Return to Overview</a></p>
+	<p class="data-vis"><img src="/data/{{ data_id }}/histogram.svg?column={{ column|urlencode|replace("/", "%2F") }}" alt="Histogram of {{ column }} in {{ data_title }}"/></p>
+{% endblock %}

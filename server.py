@@ -164,13 +164,38 @@ async def read_data(request: web.Request) -> web.Response:
 	if dataset['owner'] != logged_in_as.id:
 		raise web.HTTPNotFound()
 	
-	context = {'title': dataset['title'], 'columns': dataset['columns'], 'data': dataset['data'], 'username': logged_in_as.username}
+	context = {'id': dataset_id, 'title': dataset['title'], 'columns': dataset['columns'], 'data': dataset['data'], 'username': logged_in_as.username}
 	
 	return aiohttp_jinja2.render_template("dataset.jinja2", request, context=context)
 
 
+@routes.get('/data/{id}/histogram/{column}')
+async def view_histogram(request: web.Request) -> web.Response:
+	get_user = get_logged_in(request)
+	dataset_id = request.match_info.get("id")
+	
+	db = request.app["db"]
+	dataset = await db.datasets.find_one(ObjectId(dataset_id))
+	logged_in_as = await get_user
+	
+	if not logged_in_as:
+		raise web.HTTPFound('/login')
+	if not dataset:
+		raise web.HTTPNotFound()
+	if dataset['owner'] != logged_in_as.id:
+		raise web.HTTPNotFound()
+	
+	column = request.match_info.get("column")
+	if column not in dataset['columns']:
+		raise web.HTTPNotFound()
+	
+	context = {'data_id': dataset_id, 'data_title': dataset['title'], 'column': column}
+	
+	return aiohttp_jinja2.render_template("viewhistogram.jinja2", request, context=context)
+
+
 @routes.get('/data/{id}/histogram.svg')
-async def visualize_histogram(request: web.Request) -> web.Response:
+async def render_histogram(request: web.Request) -> web.Response:
 	get_user = get_logged_in(request)
 	dataset_id = request.match_info.get("id")
 	
