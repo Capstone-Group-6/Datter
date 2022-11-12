@@ -1,23 +1,25 @@
 {% extends "base.jinja2" %}
 {% block title %}{{ super() }} - Log In{% endblock %}
+{% block pagetitle %}{% endblock %}
+{% block navbar %}{% endblock %}
 {% block content %}
-<div class="login">
-	<h1>Log In - Datter</h1>
-	<form method="post" action="/login">
-		<table class = "center">
-			<tr>
-				<th><label for="username">Username</label></th>
-				<td><input type="text" name="username" id="username" /></td>
-			</tr>
-			<tr>
-				<th><label for="password">Password</label></th>
-				<td><input type="password" name="password" id="password" /></td>
-			</tr>
-			<tr>
-				<td><a href="/create-account">Register</a></td>
-				<th><input type="submit" value="Log In" /></th>
-			</tr>
-		</table>
-	</form>
-</div>
+	<div class="login">
+		<h1>Log In</h1>
+		<form method="post" action="/login">
+			<table class="center">
+				<tr>
+					<th><label for="username">Username</label></th>
+					<td><input type="text" name="username" id="username"/></td>
+				</tr>
+				<tr>
+					<th><label for="password">Password</label></th>
+					<td><input type="password" name="password" id="password"/></td>
+				</tr>
+				<tr>
+					<td><a href="/create-account">Register</a></td>
+					<th><input type="submit" value="Log In"/></th>
+				</tr>
+			</table>
+		</form>
+	</div>
 {% endblock %}

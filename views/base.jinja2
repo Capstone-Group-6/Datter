@@ -6,24 +6,52 @@
 	<title>{% block title %}Datter{% endblock %}</title>
 </head>
 <body>
-	{% if error %}
+{% if error %}
 	<div id="error-popup">
 		<p>{{ error }}</p>
 		<p>Click to close</p>
 	</div>
-	{% endif %}
-	{% if username %}
+{% endif %}
+{% if username %}
 	<script>
 		window.username = {{ username|tojson }};
 	</script>
 	<div class="tools">
 	</div>
-	{% endif %}
-	{% block content %}
-	{% endblock %}
-	<div id="uploading">
-		<p>Uploading...</p>
-	</div>
+{% endif %}
+{% block pagetitle %}
+	<h1>Datter</h1>
+{% endblock %}
+{% block navbar %}
+	<ul class="navbarbackground">
+		<li>
+			<div class="navbar"><a href="/">Home</a></div>
+		</li>
+		<li>
+			<div class="navbar"><a href="/recall-data">Recall Data</a></div>
+		</li>
+		<li>
+			<div class="navbar"><a href="/help">Help</a></div>
+		</li>
+		<li>
+			<div class="company"><a href="/">Datter</a></div>
+		</li>
+		{% if username %}
+			<li>
+				<div class="company"><a href="/logout">Log Out</a></div>
+			</li>
+		{% else %}
+			<li>
+				<div class="company"><a href="/login">Log In</a></div>
+			</li>
+		{% endif %}
+	</ul>
+{% endblock %}
+{% block content %}
+{% endblock %}
+<div id="uploading">
+	<p>Uploading...</p>
+</div>
 </body>
 <script src="/static/script.js"></script>
 </html>
