@@ -78,11 +78,24 @@ ul.navbarbackground {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: darkslategray;
+	background-color: #112131;
 }
 
 body {
-	background-color: #003152;
+	background: linear-gradient(to bottom, #003152, #1C1552);
+}
+
+a {
+	color: #cdf;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:visited {
+	color: #c9f;
 }
 
 h2 {
