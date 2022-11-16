@@ -18,7 +18,7 @@ html {
 	display: unset;
 	background-color: rgba(255, 255, 255, 0.5);
 	width: 100vw;
-	height: 100vw;
+	height: 100vh;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -124,7 +124,8 @@ li .company a {
 	padding: 14px 16px;
 }
 
-li .navbar a:hover {
+li .navbar a:hover,
+li .company a:hover {
 	background-color: lightgray;
 }
 
@@ -143,8 +144,11 @@ li .navbar a:hover {
 }
 
 .dragwords {
-	margin-top: 22%;
 	font-size: x-large;
+	position: relative;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 .filename a {
