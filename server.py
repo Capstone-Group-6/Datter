@@ -1,5 +1,6 @@
 import asyncio
 import csv
+import os
 from collections import namedtuple
 from io import StringIO
 from pathlib import Path
@@ -14,6 +15,7 @@ from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from argon2 import PasswordHasher
 from argon2.exceptions import VerificationError
 from bson import ObjectId
+from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
 
@@ -257,8 +259,7 @@ async def create_app():
 	
 	app = web.Application()
 	aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('./views'), extensions=['jinja2.ext.do'])
-	# TODO This key is only for testing purposes, change it to an ENVIRONMENT VARIABLE (important!) for production
-	aiohttp_session.setup(app, EncryptedCookieStorage(b'This is a secret key don\'t steal'))
+	aiohttp_session.setup(app, EncryptedCookieStorage(bytes.fromhex(os.environ["DATTER_SECRET_KEY"])))
 	
 	app["db"] = app_db
 	app.add_routes(routes)
@@ -266,4 +267,5 @@ async def create_app():
 
 
 if __name__ == '__main__':
+	load_dotenv()
 	web.run_app(create_app())

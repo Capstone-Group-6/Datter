@@ -6,6 +6,12 @@ Datter data platform hopes to offer an intuitive easy to use UI where analytics 
 
 ## How to run locally
 
+**IMPORTANT: GENERATE A SECRET TOKEN FOR AUTHENTICATION**
+
+1. Copy `example.env` to `.env`
+2. Open `.env` and insert your string of 32 random bytes encoded as 64 hex characters
+3. Save the file
+
 **Requirements** Python 3.10
 
 1. Create a Python 3.10 virtual environment and activate it
