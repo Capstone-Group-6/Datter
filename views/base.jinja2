@@ -6,6 +6,7 @@
 	<title>{% block title %}Datter{% endblock %}</title>
 </head>
 <body>
+<div class="bg-gradient">
 {% if error %}
 	<div id="error-popup">
 		<p>{{ error }}</p>
@@ -25,5 +26,6 @@
 	<p>Uploading...</p>
 </div>
 </body>
+</div>
 <script src="/static/script.js"></script>
 </html>

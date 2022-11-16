@@ -1,6 +1,7 @@
 {% extends "base.jinja2" %}
 {% block title %}{{ super() }} - Register Account{% endblock %}
 {% block content %}
+<div class="bg-gradient">
 <div class="register">
 	<h1>Register Account - Datter</h1>
 	<form method="post" action="/create-account">
@@ -28,5 +29,6 @@
 			</tr>
 		</table>
 	</form>
+</div>
 </div>
 {% endblock %}
