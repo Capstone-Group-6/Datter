@@ -38,14 +38,23 @@
     </datalist>
     <br>
     <br>
-    <label for="FirstTest">First Test Date: </label>
-    <input type="date" id="FirstTest" name="FirstTest">
+
+    
+  <div class="input_one">
+   <label class="date_name" for="FirstTest">First Test Date: </label>
+    <input type="date" id="FirstTest" type="date" name="FirstTest" readonly onclick="calender(this)">
+    </div>
+   
     <br>
     <br>
-    <label for="FinalTest">Final Test Date: </label>
-    <input type="date" id="FinalTest" name="FinalTest">
+    <div class="input_two">
+   <label class="date_name" for="FinalTest">Final Test Date: </label>
+    <input type="date" id="FinalTest" type="date" name="FinalTest" readonly onclick="calender(this)">
+    </div>
     <br>
     <br>
     <input class="recall-log" type="submit" value="Find Data"></center>
     </div>
     {% endblock %}
+
+    
