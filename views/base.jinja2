@@ -2,11 +2,47 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8"/>
+	
 	<link href="/static/style.css" type="text/css" rel="stylesheet"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="/static/custom.css" type="text/css" rel="stylesheet"/>
+	
 	<title>{% block title %}Datter{% endblock %}</title>
 </head>
+
+<style>
+
+.moon #dark{
+    position: fixed;
+    top: 25px;
+    right: 70px;
+    font-size: 40px;
+    z-index: 99999;
+    cursor: pointer;
+    color: var(--text);
+}
+
+body{
+	background: var(--body) !important;
+}
+:root{
+	--body: #fff;
+	--text: #000;
+}
+.dark_theme{
+	--body: darkgray;
+	--text: #fff;
+}
+
+</style>
 <body>
+
+<div class="moon">
+<i class="fa fa-moon-o" id="dark"></i>
+</div>
+
+
+
 {% if error %}
 	<div id="error-popup">
 		<p>{{ error }}</p>
@@ -28,4 +64,11 @@
 </body>
  <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script src="/static/script.js"></script>
+<script>
+ var icon = document.getElementById("dark");
+     icon.onclick = function(){
+      document.body.classList.toggle("dark_theme");
+     }
+</script>
+
 </html>

@@ -1,8 +1,21 @@
 .navbar a {
-	background-color: #f50057;
+	position: relative;
     color: white;
     margin: 0px 10px;
     border-radius: 5px;
+}
+.navbar a:hover::after{
+	width: 100%;
+}
+.navbar a::after{
+	position: absolute;
+	content: '';
+	width: 0;
+	height: 3px;
+	left: 0;
+	bottom: 0;
+	background: #f50057;
+	transition: all linear .3s;
 }
 label{
 	color:black !important;
