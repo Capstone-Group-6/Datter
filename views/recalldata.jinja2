@@ -4,28 +4,35 @@
 	<h1>Recall Data</h1>
 {% endblock %}
 {% block content %}
-	<br/>
-	<label for="username">Username: </label>
-	<input type="text" id="username" name="username"/>
-	<br/>
-	<br/>
-	<label for="testrun">Test run: </label>
-	<input type="text" list="testtype" id="testrun" name="testrun"/>
-	<datalist id="testtype">
-		<option value="fat"/>
-		<option value="ash"/>
-		<option value="moisture"/>
-		<option value="protein"/>
-	</datalist>
-	<br/>
-	<br/>
-	<label for="FirstTest">First Test Date: </label>
-	<input type="date" id="FirstTest" name="FirstTest"/>
-	<br/>
-	<br/>
-	<label for="FinalTest">Final Test Date: </label>
-	<input type="date" id="FinalTest" name="FinalTest"/>
-	<br/>
-	<br/>
-	<input type="submit" value="Find Data"/>
+<h1>Recall Data</h1>
+<table class="center">
+    <tr>
+        <th><label for="username">Username</label></th>
+        <td><input type="text" name="username" id="username" /></td>
+    </tr>
+    <tr>
+        <th><label for="test">Test Run</label></th>
+        <td>
+        <input list="test-opts" name="test" id="test" />
+        <datalist id="test-opts">
+            <option value="fat" />
+            <option value="ash" />
+            <option value="moisture" />
+            <option value="protein" />
+        </datalist>
+        </td>
+    </tr>
+    <tr>
+        <th><label for="firstdate">First Test Date</label></th>
+        <td><input type="date" id="FirstTest" name="FirstTest" /></td>
+    </tr>
+    <tr>
+        <th><label for="finaldate">Final Test Date</label></th>
+        <td><input type="date" id="FinalTest" name="FinalTest" /></td>
+    </tr>
+    <tr>
+        <td></td>
+        <th><input class="finddatabutton" type="submit" value="Find Data" /></th>
+    </tr>
+</table>
 {% endblock %}
