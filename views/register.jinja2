@@ -1,6 +1,7 @@
 {% extends "base.jinja2" %}
 {% block title %}{{ super() }} - Register Account{% endblock %}
 {% block content %}
+<div class="bg-gradient">
 <div class="register">
 	<h1>Register Account - Datter</h1>
 	<form method="post" action="/create-account">
@@ -19,14 +20,15 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<label><input type="checkbox" required />&nbsp;I am a human</label>
+					<label><input for="checkbox" type="checkbox" required />&nbsp;I am a human</label>
 				</td>
 			</tr>
 			<tr>
 				<td><a href="/login">Log In</a></td>
-				<th><input type="submit" value="Register" /></th>
+				<th><input class = "loginbutton" type="submit" value="Register" /></th>
 			</tr>
 		</table>
 	</form>
+</div>
 </div>
 {% endblock %}

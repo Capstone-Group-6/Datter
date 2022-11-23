@@ -1,14 +1,61 @@
+/*Every Page*/
 html {
 	font-family: sans-serif;
 
 	/* This is so the drag-and-drop works on the entire page, not just the content's bounding box */
 	margin: 0;
 	padding: 0;
-	width: 100vw;
-	height: 100vh;
+	width: 100%;
+	height: 100%;
 	box-sizing: border-box;
-	color: white;
+	color: black;
 }
+
+h1 {
+	text-align: center;
+}
+
+ul.navbarbackground {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #f50057;
+}
+
+h2 {
+	color: black;
+}
+
+.navbar a {
+	float: left;
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	transition: 1s
+}
+
+.company a {
+	float: right;
+	display: block;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	padding: 14px 16px;
+	transition: 1s
+}
+
+.navbar a:hover {
+	background-color: lightgray;
+}
+
+.company a:hover{
+	background-color: lightgray;
+}
+
+/*Error and upload handling*/
 
 #uploading {
 	display: none;
@@ -34,7 +81,7 @@ html {
 }
 
 #error-popup {
-	background-color: rgba(255, 170, 170, 0.8);
+	background-color: rgba(255, 170, 170, 0.5);
 	color: rgb(170, 0, 0);
 	border-radius: 1em;
 	text-align: center;
@@ -43,57 +90,92 @@ html {
 	height: 15vh;
 
 	position: fixed;
-	top: 50%;
+	top: 5vh;
 	left: 50%;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, 0);
+}
+
+/*Background */
+
+body {
+	margin: 0;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-image: linear-gradient(#ffffff, #be83fa);
 }
 
 .tools {
 	float: right;
 }
 
-table {
-	border-collapse: collapse;
+/*Login Screen */
+
+#username {
+	height: 45px;
+	background-color: white;
+	padding-left: 10px;
+	width: 95.5%;
+	border-radius: 5px;
+	border: 1px solid gray;
 }
 
-h1 {
-	text-align: center;
-}
-
-th,
-td {
-	border: 0.0625em solid #def;
-	padding: 0.25em;
-}
-
-#getData {
-	width: 250px;
-	height: 200px;
-	padding: 10px;
-	border: 10px solid #4f4d4d;
-}
-
-ul.navbarbackground {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: darkslategray;
-}
-
-body {
-	background-color: #003152;
-}
-
-h2 {
-	color: white;
+#password{
+	height:45px;
+	background-color:white ;
+	padding-left:10px;
+	width:95.5%;
+	border-radius:5px;
+	border:1px solid gray;
 }
 
 .login {
 	text-align: center;
 }
 
+td a {
+	color: black;
+	text-decoration: none;
+	text-decoration: underline;
+	transition: 1s;
+}
+
+td a:hover{
+	color: #f50057;
+	text-decoration: underline;
+}
+
+/*Register Page*/
+
+#confirm-password{
+	height:45px;
+	background-color:white;
+	padding-left:10px;
+	width:95.5%;
+	border-radius:5px;
+	border:1px solid gray;
+}
+
+#checkbox{
+	float: right;
+}
+
 .register {
+	text-align: center;
+}
+
+/*Form Tables*/
+
+table {
+	border-spacing: 20px;
+	width:50%;
+}
+
+th,
+td {
+	border: 0.0625em transparent;
+}
+
+p{
 	text-align: center;
 }
 
@@ -102,30 +184,21 @@ h2 {
 	margin-right: auto;
 }
 
-#fileuploadbutton {
-	text-align: center;
-}
+/*Index Page*/
 
-.navbar a {
-	float: left;
-	display: block;
+input[type="file"]::file-selector-button {
+	background-color: #f50057;
 	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
+	width: 50%;
+	height: 45px;
+	border-radius: 5px;
+	border-style: none;
+	transition: 1s;
 }
 
-li .company a {
-	float: right;
-	display: block;
-	color: white;
-	text-align: center;
-	text-decoration: none;
-	padding: 14px 16px;
-}
-
-li .navbar a:hover {
-	background-color: lightgray;
+input[type="file"]::file-selector-button:hover {
+	background-color: white;
+	color: black;
 }
 
 .fileuploadbox {
@@ -133,11 +206,15 @@ li .navbar a:hover {
 	height: 500px;
 }
 
+#fileuploadbutton{
+	text-align: center;
+}
+
 .dragndrop {
 	margin-right: 25%;
 	margin-left: 25%;
 	height: 100%;
-	border-color: white;
+	border-color: black;
 	border-style: dashed;
 	text-align: center;
 }
@@ -147,7 +224,100 @@ li .navbar a:hover {
 	font-size: x-large;
 }
 
+/*Help Page*/
+
 .filename a {
-	color: #def;
+	color: black;
 	text-decoration: none;
 }
+
+/*Recall Data Page */
+
+input[type="date"]{
+	background-color: White;
+	color: Black;
+	width: 97.5%;
+	height: 45px;
+	border-radius: 5px;
+	border-style: none;
+	transition: 1s;
+}
+
+.dataset{
+	margin-left: auto;
+	margin-right: auto;
+	width: 30%;
+	border-collapse: collapse;
+	border-color: white;
+}
+
+.data{
+	text-align: center;
+	border: 0.0625em solid;
+}
+
+#test{
+	height:45px;
+	background-color:white ;
+	padding-left:10px;
+	width:95.5%;
+	border-radius:5px;
+	border:1px solid gray;
+}
+
+/*Button styles*/
+
+.loginbutton {
+	background-color: #f50057;
+	color: white;
+	width: 100%;
+	height: 45px;
+	width: 98%;
+	border-radius: 5px;
+	border-style: none;
+	transition: 1s;
+}
+
+.loginbutton:hover{
+	background-color: white;
+	color: black;
+}
+
+.finddatabutton{
+	background-color: #f50057;
+	color: white;
+	width: 98%;
+	height: 45px;
+	border-radius: 5px;
+	border-style: none;
+	transition: 1s;
+}
+
+.finddatabutton:hover{
+	background-color: white;
+	color: black;
+}
+
+.fileuploadbutton {
+	background-color: #f50057;
+	color: white;
+	width: 6%;
+	height: 45px;
+	border-radius: 5px;
+	border-style: none;
+	transition: 1s;
+}
+
+.fileuploadbutton:hover{
+	background-color: white;
+	color: black;
+}
+
+/*
+#getData {
+	width: 250px;
+	height: 200px;
+	padding: 10px;
+	border: 10px solid #4f4d4d;
+}
+*/
