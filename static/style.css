@@ -244,6 +244,7 @@ input[type="date"]{
 }
 
 .dataset{
+	background-image: linear-gradient(rgb(136, 201, 255), #ffffff);
 	margin-left: auto;
 	margin-right: auto;
 	width: 30%;
