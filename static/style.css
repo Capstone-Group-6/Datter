@@ -65,7 +65,7 @@ h2 {
 	display: unset;
 	background-color: rgba(255, 255, 255, 0.5);
 	width: 100vw;
-	height: 100vw;
+	height: 100vh;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -220,8 +220,11 @@ input[type="file"]::file-selector-button:hover {
 }
 
 .dragwords {
-	margin-top: 22%;
 	font-size: x-large;
+	position: relative;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 /*Help Page*/

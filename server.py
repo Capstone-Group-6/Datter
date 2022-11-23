@@ -1,4 +1,6 @@
+import asyncio
 import csv
+import os
 from collections import namedtuple
 from io import StringIO
 from pathlib import Path
@@ -13,12 +15,36 @@ from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from argon2 import PasswordHasher
 from argon2.exceptions import VerificationError
 from bson import ObjectId
+from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
 
 async def setup_db() -> AsyncIOMotorDatabase:
 	db = AsyncIOMotorClient().datter
 	return db
+
+
+DataSet = namedtuple("DataSet", ["title", "owner", "columns", "data"])
+
+
+async def get_dataset(db: AsyncIOMotorDatabase, dataset_id: str) -> DataSet:
+	dataset = await db.datasets.find_one(ObjectId(dataset_id))
+	data_rows = []
+	
+	async for data_row in db.data_rows.find({'dataset': dataset_id}):
+		data_rows.append(data_row['datum'])
+	
+	return DataSet(dataset['title'], dataset['owner'], dataset['columns'], data_rows)
+
+
+async def put_dataset(db: AsyncIOMotorDatabase, dataset: DataSet) -> str:
+	metadata = {'title': dataset.title, 'owner': dataset.owner, 'columns': dataset.columns}
+	dataset_id = (await db.datasets.insert_one(metadata)).inserted_id
+	
+	rows_to_insert = [{'dataset': str(dataset_id), 'datum': datum} for datum in dataset.data]
+	await asyncio.gather(*[db.data_rows.insert_one(row) for row in rows_to_insert])
+	
+	return str(dataset_id)
 
 
 # might add more data later
@@ -103,8 +129,15 @@ async def process_registration(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	posted_data = await request.post()
 	username = posted_data['username']
+	
+	if not username or username.isspace():
+		return aiohttp_jinja2.render_template("register.jinja2", request, context={'error': "Invalid username, must contain non-whitespace characters"})
+	
 	if await db.users.find_one({'username': username}):
 		return aiohttp_jinja2.render_template("register.jinja2", request, context={'error': "That user already exists"})
+	
+	if not posted_data['password']:
+		return aiohttp_jinja2.render_template("register.jinja2", request, context={'error': "Invalid password, must not be blank"})
 	
 	password = Argon2.hash(posted_data['password'])
 	
@@ -120,6 +153,9 @@ async def handle_login(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	posted_data = await request.post()
 	username = posted_data['username']
+	
+	if not username or username.isspace():
+		return aiohttp_jinja2.render_template("login.jinja2", request, context={'error': "Invalid username, must contain non-whitespace characters"})
 	
 	db_user_data = await db.users.find_one({'username': username})
 	if not db_user_data:
@@ -153,51 +189,52 @@ async def read_data(request: web.Request) -> web.Response:
 	dataset_id = request.match_info.get("id")
 	
 	db = request.app["db"]
-	dataset = await db.datasets.find_one(ObjectId(dataset_id))
+	dataset_metadata = await db.datasets.find_one(ObjectId(dataset_id))
 	logged_in_as = await get_user
 	
 	if not logged_in_as:
 		raise web.HTTPFound('/login')
-	if not dataset:
+	if not dataset_metadata:
+		raise web.HTTPNotFound()
+	if dataset_metadata['owner'] != logged_in_as.id:
 		raise web.HTTPNotFound()
 	
-	if dataset['owner'] != logged_in_as.id:
-		raise web.HTTPNotFound()
+	dataset = await get_dataset(db, dataset_id)
 	
-	context = {'title': dataset['title'], 'columns': dataset['columns'], 'data': dataset['data'], 'username': logged_in_as.username}
+	context = {'id': dataset_id, 'title': dataset.title, 'columns': dataset.columns, 'data': dataset.data, 'username': logged_in_as.username}
 	
 	return aiohttp_jinja2.render_template("dataset.jinja2", request, context=context)
 
 
-@routes.get('/data/{id}/histogram.svg')
-async def visualize_histogram(request: web.Request) -> web.Response:
+@routes.get('/data/{id}/histogram/{column}')
+async def view_histogram(request: web.Request) -> web.Response:
 	get_user = get_logged_in(request)
 	dataset_id = request.match_info.get("id")
 	
 	db = request.app["db"]
-	dataset = await db.datasets.find_one(ObjectId(dataset_id))
+	dataset_metadata = await db.datasets.find_one(ObjectId(dataset_id))
 	logged_in_as = await get_user
 	
 	if not logged_in_as:
 		raise web.HTTPFound('/login')
-	if not dataset:
+	if not dataset_metadata:
 		raise web.HTTPNotFound()
-	if dataset['owner'] != logged_in_as.id:
+	if dataset_metadata['owner'] != logged_in_as.id:
 		raise web.HTTPNotFound()
 	
-	column = request.query.get("column")
-	if column not in dataset['columns']:
-		column = dataset['columns'][0]
+	dataset = await get_dataset(db, dataset_id)
 	
-	context = {'title': dataset['title'], 'column': column, 'data': dataset['data']}
+	column = request.match_info.get("column")
+	if column not in dataset.columns:
+		column = dataset.columns[0]
 	
-	response = aiohttp_jinja2.render_template("svg/histogram.jinja2", request, context=context)
-	response.content_type = "image/svg+xml"
+	context = {'data_id': dataset_id, 'title': dataset.title, 'column': column, 'data': dataset.data, 'username': logged_in_as.username}
+	
+	response = aiohttp_jinja2.render_template("histogram.jinja2", request, context=context)
 	return response
 
 
-def read_dataset_from_string(title: str, lines: Iterable[str], user_id: str) -> dict:
-	dataset = {'title': title}
+def read_dataset_from_string(title: str, lines: Iterable[str], user_id: str) -> DataSet:
 	reader = csv.DictReader(lines)
 	columns = reader.fieldnames
 	data = []
@@ -205,10 +242,7 @@ def read_dataset_from_string(title: str, lines: Iterable[str], user_id: str) -> 
 	for row in reader:
 		data.append(row)
 	
-	dataset['columns'] = columns
-	dataset['data'] = data
-	dataset['owner'] = user_id
-	return dataset
+	return DataSet(title, user_id, columns, data)
 
 
 @routes.post("/data")
@@ -225,7 +259,7 @@ async def submit_data(request: web.Request) -> web.Response:
 	with StringIO(csv_text) as str_in:
 		dataset = read_dataset_from_string(field.filename, str_in, logged_in_as.id)
 	
-	dataset_id = (await db.datasets.insert_one(dataset)).inserted_id
+	dataset_id = await put_dataset(db, dataset)
 	return web.json_response({'redirect_to': f"/data/{str(dataset_id)}"})
 
 
@@ -235,8 +269,7 @@ async def create_app():
 	
 	app = web.Application()
 	aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('./views'), extensions=['jinja2.ext.do'])
-	# TODO This key is only for testing purposes, change it to an ENVIRONMENT VARIABLE (important!) for production
-	aiohttp_session.setup(app, EncryptedCookieStorage(b'This is a secret key don\'t steal'))
+	aiohttp_session.setup(app, EncryptedCookieStorage(bytes.fromhex(os.environ["DATTER_SECRET_KEY"])))
 	
 	app["db"] = app_db
 	app.add_routes(routes)
@@ -244,4 +277,5 @@ async def create_app():
 
 
 if __name__ == '__main__':
+	load_dotenv()
 	web.run_app(create_app())
