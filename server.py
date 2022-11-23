@@ -129,8 +129,15 @@ async def process_registration(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	posted_data = await request.post()
 	username = posted_data['username']
+	
+	if not username or username.isspace():
+		return aiohttp_jinja2.render_template("register.jinja2", request, context={'error': "Invalid username, must contain non-whitespace characters"})
+	
 	if await db.users.find_one({'username': username}):
 		return aiohttp_jinja2.render_template("register.jinja2", request, context={'error': "That user already exists"})
+	
+	if not posted_data['password']:
+		return aiohttp_jinja2.render_template("register.jinja2", request, context={'error': "Invalid password, must not be blank"})
 	
 	password = Argon2.hash(posted_data['password'])
 	
@@ -146,6 +153,9 @@ async def handle_login(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	posted_data = await request.post()
 	username = posted_data['username']
+	
+	if not username or username.isspace():
+		return aiohttp_jinja2.render_template("login.jinja2", request, context={'error': "Invalid username, must contain non-whitespace characters"})
 	
 	db_user_data = await db.users.find_one({'username': username})
 	if not db_user_data:
