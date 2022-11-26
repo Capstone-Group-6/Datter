@@ -150,14 +150,19 @@ async def help_page(request: web.Request) -> web.Response:
 
 @routes.get("/recall-data")
 async def recall_data_page(request: web.Request) -> web.Response:
-	return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={})
+	logged_in_as = await get_logged_in(request)
+	if not logged_in_as:
+		# Redirect to login page
+		raise web.HTTPFound("/login")
+	
+	return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={'username': logged_in_as.username})
 
 
 @routes.post("/recall-data")
 async def process_recall_data(request: web.Request) -> web.Response:
 	db = request.app["db"]
-	user = await get_logged_in(request)
-	if not user:
+	logged_in_as = await get_logged_in(request)
+	if not logged_in_as:
 		raise web.HTTPFound("/login")
 	
 	posted_form = await request.post()
@@ -177,7 +182,7 @@ async def process_recall_data(request: web.Request) -> web.Response:
 	if not test_results:
 		return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={'error': "No rows found - are you sure you entered in your query correctly?"})
 	
-	return aiohttp_jinja2.render_template("recalldata_results.jinja2", request, context={'columns': test_results.columns, 'data': test_results.data, 'mean': test_results.mean, 'std_dev': test_results.std_dev})
+	return aiohttp_jinja2.render_template("recalldata_results.jinja2", request, context={'columns': test_results.columns, 'data': test_results.data, 'mean': test_results.mean, 'std_dev': test_results.std_dev, 'username': logged_in_as.username})
 
 
 @routes.get("/create-account")
