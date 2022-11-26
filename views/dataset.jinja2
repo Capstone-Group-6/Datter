@@ -1,46 +1,31 @@
 {% extends "base.jinja2" %}
 {% block title %}{{ super() }} - {{ title }}{% endblock %}
+{% block pagetitle %}
+	<h1>{{ title }} - Datter</h1>
+{% endblock %}
 {% block content %}
-<div class="bg-gradient">
-<h1>{{ title }} - Datter</h1>
-<ul class="navbarbackground">
-	<li>
-		<div class="navbar"><a href="/">Home</a></div>
-	</li>
-	<li>
-		<div class="navbar"><a href="/logout">Login</a></div>
-	</li>
-	<li>
-		<div class="navbar"><a href="/recall-data">Recall Data</a></div>
-	</li>
-	<li>
-		<div class="navbar"><a href="#">Help</a></div>
-	</li>
-	<li>
-		<div class="company"><a href="/">Datter</a></div>
-	</li>
-	{% if username %}<li>
-		<div class="company"><a href="/logout">Logout</a></div>
-	</li>{% endif %}
-</ul>
-<p><a href="/">Return to Main</a></p>
-<table class = "dataset">
-	<thead>
+	<p><a href="/">Return to Main</a></p>
+	<table class = "dataset">
+		<thead>
 		<tr>
 			{% for column in columns %}
-			<th class="data">{{ column }}</th>
+				<th class = "data">{{ column }}</th>
 			{% endfor %}
 		</tr>
-	</thead>
-	<tbody>
+		<tr>
+			{% for column in columns %}
+				<td class = "data"><i><a href="/data/{{ id }}/histogram/{{ column|urlencode|replace("/", "%2F") }}">View Histogram</a></i></td>
+			{% endfor %}
+		</tr>
+		</thead>
+		<tbody>
 		{% for datum in data %}
-		<tr>
-			{% for column in columns %}
-			<td class = "data">{{ datum[column] }}</td>
-			{% endfor %}
-		</tr>
+			<tr>
+				{% for column in columns %}
+					<td class = "data">{{ datum[column] }}</td>
+				{% endfor %}
+			</tr>
 		{% endfor %}
-	</tbody>
+		</tbody>
 </table>
-</div>
 {% endblock %}
