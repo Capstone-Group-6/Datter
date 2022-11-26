@@ -43,7 +43,15 @@ def convert_to_date(text: str) -> Optional[datetime]:
 async def get_dataset(db: AsyncIOMotorDatabase, dataset_id: str) -> DataSet:
 	dataset = await db.datasets.find_one(ObjectId(dataset_id))
 	data_rows = []
-	
+
+	#in theory the working query to get the correct code from the form
+	#on the recall data page is below:
+	#async for data_row in db.data_rows.find({"datum.Date": {"$gte": FirstTest, "$lte": FinalTest}, "datum.User": username, "datum.Test": test}):
+	#but keep in mind the dates entered in the form have to be converted 
+	#to strings because thats how they are imported from the csv file
+	#but other than that the query should return exactly what we are 
+	#looking for everytime from all datasets as long as you are taking the
+	#data from the data_rows table
 	async for data_row in db.data_rows.find({'dataset': dataset_id}):
 		data_rows.append(data_row['datum'])
 	

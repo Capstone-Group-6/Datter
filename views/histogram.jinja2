@@ -27,7 +27,7 @@
 					text-anchor="middle"
 					x="{{ (distinct_count * 12.5) + 12.5 }}"
 					y="15"
-					fill="#fff"
+					fill="#000"
 			>Histogram of {{ column }} in {{ title }}</text>
 			{% for y in range(0, distinct_max + 1) %}
 				<text
@@ -36,7 +36,7 @@
 						text-anchor="end"
 						x="20"
 						y="{{ 125 - (y * 100.0 / distinct_max) }}"
-					fill="#fff"
+					fill="#000"
 				>{{ y }}</text>
 			{% endfor %}
 			{% for (value, value_count) in distinct_values %}
@@ -46,7 +46,7 @@
 						text-anchor="middle"
 						x="{{ (loop.index0 * 25) + 37.5 }}"
 						y="135"
-					fill="#fff"
+					fill="#000"
 				>{{ value }}</text>
 				<rect
 						x="{{ (loop.index0 * 25) + 30 }}"
