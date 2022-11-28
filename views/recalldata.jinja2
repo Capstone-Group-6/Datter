@@ -1,38 +1,39 @@
 {% extends "base.jinja2" %}
 {% block title %}{{ super() }} - Recall Data{% endblock %}
 {% block pagetitle %}
-	<h1>Recall Data</h1>
+<h1>Recall Data</h1>
 {% endblock %}
 {% block content %}
-<h1>Recall Data</h1>
-<table class="center">
-    <tr>
-        <th><label for="username">Username</label></th>
-        <td><input type="text" name="username" id="username" /></td>
-    </tr>
-    <tr>
-        <th><label for="test">Test Run</label></th>
-        <td>
-        <input list="test-opts" name="test" id="test" />
-        <datalist id="test-opts">
-            <option value="fat">
-            <option value="ash">
-            <option value="moisture">
-            <option value="protein">
-        </datalist>
-        </td>
-    </tr>
-    <tr>
-        <th><label for="firstdate">First Test Date</label></th>
-        <td><input type="date" id="FirstTest" name="FirstTest" /></td>
-    </tr>
-    <tr>
-        <th><label for="finaldate">Final Test Date</label></th>
-        <td><input type="date" id="FinalTest" name="FinalTest" /></td>
-    </tr>
-    <tr>
-        <td></td>
-        <th><input class="finddatabutton" type="submit" value="Find Data" /></th>
-    </tr>
-</table>
+	<form method="post" action="/recall-data">
+		<table class="center">
+			<tr>
+				<th><label for="username">Username</label></th>
+				<td><input type="text" name="username" id="username"/></td>
+			</tr>
+			<tr>
+				<th><label for="test">Test Run</label></th>
+				<td>
+					<input list="test-opts" name="test" id="test"/>
+					<datalist id="test-opts">
+						<option value="fat"/>
+						<option value="ash"/>
+						<option value="moisture"/>
+						<option value="protein"/>
+					</datalist>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="FirstTest">First Test Date</label></th>
+				<td><input type="date" id="FirstTest" name="FirstTest"/></td>
+			</tr>
+			<tr>
+				<th><label for="FinalTest">Final Test Date</label></th>
+				<td><input type="date" id="FinalTest" name="FinalTest"/></td>
+			</tr>
+			<tr>
+				<td></td>
+				<th><input class="finddatabutton" type="submit" value="Find Data"/></th>
+			</tr>
+		</table>
+	</form>
 {% endblock %}

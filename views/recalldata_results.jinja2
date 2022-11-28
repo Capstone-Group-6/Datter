@@ -1,0 +1,45 @@
+{% extends "base.jinja2" %}
+{% block title %}{{ super() }} - Recall Data Results{% endblock %}
+{% block pagetitle %}
+	<h1>Recall Data Results</h1>
+{% endblock %}
+{% block content %}
+	<br/>
+	<table class="dataset">
+		<thead>
+		<tr>
+			<th colspan="2" scope="col" class="data">Data Summary</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<th scope="row" class="data">Mean &mu;</th>
+			<td class="data">{{ mean }}</td>
+		</tr>
+		<tr>
+			<th scope="row" class="data">Standard Deviation &sigma;</th>
+			<td class="data">{{ std_dev }}</td>
+		</tr>
+		</tbody>
+	</table>
+	<br/>
+	<br/>
+	<table class="dataset">
+		<thead>
+		<tr>
+			{% for column in columns %}
+				<th class="data">{{ column }}</th>
+			{% endfor %}
+		</tr>
+		</thead>
+		<tbody>
+		{% for datum in data %}
+			<tr>
+				{% for column in columns %}
+					<td class="data">{{ datum[column] }}</td>
+				{% endfor %}
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

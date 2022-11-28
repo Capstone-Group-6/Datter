@@ -5,16 +5,16 @@
 {% endblock %}
 {% block content %}
 	<p><a href="/">Return to Main</a></p>
-	<table class = "dataset">
+	<table class="dataset">
 		<thead>
 		<tr>
 			{% for column in columns %}
-				<th class = "data">{{ column }}</th>
+				<th class="data">{{ column }}</th>
 			{% endfor %}
 		</tr>
 		<tr>
 			{% for column in columns %}
-				<td class = "data"><i><a href="/data/{{ id }}/histogram/{{ column|urlencode|replace("/", "%2F") }}">View Histogram</a></i></td>
+				<td class="data"><i><a href="/data/{{ id }}/histogram/{{ column|urlencode|replace("/", "%2F") }}">View Histogram</a></i></td>
 			{% endfor %}
 		</tr>
 		</thead>
@@ -22,10 +22,10 @@
 		{% for datum in data %}
 			<tr>
 				{% for column in columns %}
-					<td class = "data">{{ datum[column] }}</td>
+					<td class="data">{{ datum[column] }}</td>
 				{% endfor %}
 			</tr>
 		{% endfor %}
 		</tbody>
-</table>
+	</table>
 {% endblock %}

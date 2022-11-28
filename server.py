@@ -1,10 +1,12 @@
 import asyncio
 import csv
 import os
+import re
 from collections import namedtuple
+from datetime import datetime
 from io import StringIO
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Any
 
 import aiohttp_jinja2
 import aiohttp_session
@@ -25,16 +27,61 @@ async def setup_db() -> AsyncIOMotorDatabase:
 
 
 DataSet = namedtuple("DataSet", ["title", "owner", "columns", "data"])
+DataTestResult = namedtuple("DataSet", ["columns", "data", "mean", "std_dev"])
+
+DATE_REGEX = re.compile("([0-9]{4})-([0-9]{2})-([0-9]{2})")
+
+
+def convert_to_date(text: str) -> Optional[datetime]:
+	date_test = DATE_REGEX.fullmatch(text)
+	if not date_test:
+		return None
+	y, m, d = [int(i) for i in date_test.groups()]
+	return datetime(y, m, d)
 
 
 async def get_dataset(db: AsyncIOMotorDatabase, dataset_id: str) -> DataSet:
 	dataset = await db.datasets.find_one(ObjectId(dataset_id))
 	data_rows = []
-	
+
+	#in theory the working query to get the correct code from the form
+	#on the recall data page is below:
+	#async for data_row in db.data_rows.find({"datum.Date": {"$gte": FirstTest, "$lte": FinalTest}, "datum.User": username, "datum.Test": test}):
+	#but keep in mind the dates entered in the form have to be converted 
+	#to strings because thats how they are imported from the csv file
+	#but other than that the query should return exactly what we are 
+	#looking for everytime from all datasets as long as you are taking the
+	#data from the data_rows table
 	async for data_row in db.data_rows.find({'dataset': dataset_id}):
 		data_rows.append(data_row['datum'])
 	
 	return DataSet(dataset['title'], dataset['owner'], dataset['columns'], data_rows)
+
+
+async def test_dataset(db: AsyncIOMotorDatabase, test: str, username: str, start_date: datetime, end_date: datetime) -> Optional[DataTestResult]:
+	data_cols = set()
+	data_rows = []
+	
+	# Statistics
+	results = []
+	num_rows = 0
+	
+	async for data_row in db.data_rows.find({'datum.Results': {'$exists': True}, 'datum.Date': {'$gte': start_date, '$lte': end_date}, 'datum.User': username, 'datum.Test': test}):
+		datum = data_row['datum']
+		data_cols.update(datum.keys())
+		data_rows.append(datum)
+		
+		results.append(float(datum['Results']))
+		num_rows += 1
+	
+	if num_rows == 0:
+		return None
+	
+	mean = sum(results) / num_rows
+	# TODO - we need to know for certain if we should be using Bessel's correction here
+	std_dev = (sum((i - mean) ** 2 for i in results) / (num_rows - 1)) ** 0.5
+	
+	return DataTestResult(data_cols, data_rows, mean, std_dev)
 
 
 async def put_dataset(db: AsyncIOMotorDatabase, dataset: DataSet) -> str:
@@ -111,7 +158,39 @@ async def help_page(request: web.Request) -> web.Response:
 
 @routes.get("/recall-data")
 async def recall_data_page(request: web.Request) -> web.Response:
-	return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={})
+	logged_in_as = await get_logged_in(request)
+	if not logged_in_as:
+		# Redirect to login page
+		raise web.HTTPFound("/login")
+
+	return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={'username': logged_in_as.username})
+
+
+@routes.post("/recall-data")
+async def process_recall_data(request: web.Request) -> web.Response:
+	db = request.app["db"]
+	logged_in_as = await get_logged_in(request)
+	if not logged_in_as:
+		raise web.HTTPFound("/login")
+	
+	posted_form = await request.post()
+	
+	username = posted_form['username'].lower()
+	test = posted_form['test'].lower()
+	
+	start_date = convert_to_date(posted_form['FirstTest'])
+	if not start_date:
+		return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={'error': "Invalid format for First Test Date - please use the calendar input"})
+	
+	end_date = convert_to_date(posted_form['FinalTest'])
+	if not end_date:
+		return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={'error': "Invalid format for Final Test Date - please use the calendar input"})
+	
+	test_results = await test_dataset(db, test, username, start_date, end_date)
+	if not test_results:
+		return aiohttp_jinja2.render_template("recalldata.jinja2", request, context={'error': "No rows found - are you sure you entered in your query correctly?"})
+	
+	return aiohttp_jinja2.render_template("recalldata_results.jinja2", request, context={'columns': test_results.columns, 'data': test_results.data, 'mean': test_results.mean, 'std_dev': test_results.std_dev, 'username': logged_in_as.username})
 
 
 @routes.get("/create-account")
@@ -234,13 +313,29 @@ async def view_histogram(request: web.Request) -> web.Response:
 	return response
 
 
+def process_cell(cell_data: str) -> Any:
+	# Check if it's a date
+	date_test = convert_to_date(cell_data)
+	if date_test:
+		return date_test
+	
+	# Check if it's a float
+	try:
+		return float(cell_data)
+	except ValueError:
+		pass
+	
+	return cell_data.lower()
+
+
 def read_dataset_from_string(title: str, lines: Iterable[str], user_id: str) -> DataSet:
 	reader = csv.DictReader(lines)
 	columns = reader.fieldnames
 	data = []
 	
 	for row in reader:
-		data.append(row)
+		processed_row = {k: process_cell(v) for (k, v) in row.items()}
+		data.append(processed_row)
 	
 	return DataSet(title, user_id, columns, data)
 
