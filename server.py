@@ -86,6 +86,13 @@ async def put_dataset(db: AsyncIOMotorDatabase, dataset: DataSet) -> str:
 	return str(dataset_id)
 
 
+async def del_dataset(db: AsyncIOMotorDatabase, dataset_id: str):
+	await asyncio.gather(
+		db.data_rows.delete_many({'dataset': dataset_id}),
+		db.datasets.delete_one({'_id': ObjectId(dataset_id)})
+	)
+
+
 # might add more data later
 UserInfo = namedtuple("UserInfo", ["id", "username"])
 Argon2 = PasswordHasher()
@@ -143,7 +150,7 @@ async def help_page(request: web.Request) -> web.Response:
 	db = request.app["db"]
 	datasets = []
 	async for dataset in db.datasets.find({'owner': logged_in_as.id}):
-		datasets.append({'url': f"/data/{str(dataset['_id'])}", 'title': dataset['title']})
+		datasets.append({'id': f"{str(dataset['_id'])}", 'title': dataset['title']})
 	
 	return aiohttp_jinja2.render_template("help.jinja2", request, context={'datasets': datasets, 'username': logged_in_as.username})
 
@@ -303,6 +310,55 @@ async def view_histogram(request: web.Request) -> web.Response:
 	
 	response = aiohttp_jinja2.render_template("histogram.jinja2", request, context=context)
 	return response
+
+
+@routes.get('/data/{id}/delete')
+async def confirm_deletion_of_data(request: web.Request) -> web.Response:
+	get_user = get_logged_in(request)
+	dataset_id = request.match_info.get("id")
+	
+	db = request.app["db"]
+	dataset_metadata = await db.datasets.find_one(ObjectId(dataset_id))
+	logged_in_as = await get_user
+	
+	if not logged_in_as:
+		raise web.HTTPFound('/login')
+	if not dataset_metadata:
+		raise web.HTTPNotFound()
+	if dataset_metadata['owner'] != logged_in_as.id:
+		raise web.HTTPNotFound()
+	
+	dataset = await get_dataset(db, dataset_id)
+	
+	context = {'data_id': dataset_id, 'title': dataset.title, 'username': logged_in_as.username}
+	
+	return aiohttp_jinja2.render_template("confirm_delete.jinja2", request, context=context)
+
+
+@routes.post('/data/{id}/delete/yes')
+async def delete_data(request: web.Request) -> web.Response:
+	get_user = get_logged_in(request)
+	dataset_id = request.match_info.get("id")
+	
+	db = request.app["db"]
+	dataset_metadata = await db.datasets.find_one(ObjectId(dataset_id))
+	logged_in_as = await get_user
+	
+	if not logged_in_as:
+		raise web.HTTPFound('/login')
+	if not dataset_metadata:
+		raise web.HTTPNotFound()
+	if dataset_metadata['owner'] != logged_in_as.id:
+		raise web.HTTPNotFound()
+	
+	await del_dataset(db, dataset_id)
+	
+	raise web.HTTPFound('/help')
+
+
+@routes.post('/data/{id}/delete/no')
+async def dont_delete_data(request: web.Request) -> web.Response:
+	raise web.HTTPFound('/help')
 
 
 def process_cell(cell_data: str) -> Any:

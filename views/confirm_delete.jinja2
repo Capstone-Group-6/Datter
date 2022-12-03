@@ -1,0 +1,19 @@
+{% extends "base.jinja2" %}
+{% block title %}{{ super() }} - Deletion Confirmation{% endblock %}
+{% block pagetitle %}
+	<h1>Help</h1>
+{% endblock %}
+{% block content %}
+	<br/>
+	<p class="confirm-prompt">
+		Are you sure you want to delete <strong>{{ title }}</strong>? It will be gone <strong>forever</strong>!
+	</p>
+	<div class="confirm-button-row">
+		<form action="/data/{{ data_id }}/delete/yes" method="post">
+		<input type="submit" class="confirm-button danger" value="Yes, delete it"/>
+		</form>
+		<form action="/data/{{ data_id }}/delete/no" method="post">
+		<input type="submit" class="confirm-button" value="No, take me back"/>
+		</form>
+	</div>
+{% endblock %}

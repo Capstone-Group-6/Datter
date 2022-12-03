@@ -5,11 +5,17 @@
 {% endblock %}
 {% block content %}
 	<br/>
-	<ul>
-		{% for dataset in datasets %}
-			<li>
-				<div class="filename"><a href="{{ dataset.url }}">{{ dataset.title }}</a></div>
-			</li>
-		{% endfor %}
-	</ul>
+	{% for dataset in datasets %}
+		{% if loop.first %}
+			<ul>
+		{% endif %}
+	<li>
+		<div class="filename"><a href="/data/{{ dataset.id }}">{{ dataset.title }}</a>&nbsp;-&nbsp;<a href="/data/{{ dataset.id }}/delete">(Delete)</a></div>
+	</li>
+	{% if loop.last %}
+		</ul>
+	{% endif %}
+	{% else %}
+		<p>You have no uploaded datasets. Files can be submitted at the <a href="/">upload page</a>.</p>
+	{% endfor %}
 {% endblock %}
